@@ -1,5 +1,8 @@
 $(function() {
-
+	// < IE9
+	if(!Modernizr.csstransforms) {
+		alert('For the best experience, please use a more modern web browser, like Google Chrome or Mozilla Firefox.');
+	}
 });
 
 
