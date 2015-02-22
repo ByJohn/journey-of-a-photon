@@ -41,6 +41,27 @@ var TitleScreen = Backbone.View.extend({
 
 	begin: function() {
 		console.log('begin');
+		router.navigate('photon', {trigger: true});
+	}
+
+});
+
+var Photon = Backbone.View.extend({
+
+	el: '#page',
+
+	events: {
+		'click button.plop': 'next'
+	},
+
+	render: function() {
+		var template = '<button class="plop">What is a Photon?</button>';
+		this.$el.html(template);
+	},
+
+	next: function() {
+		console.log('next');
+		router.navigate('', {trigger: true});
 	}
 
 });
@@ -51,7 +72,8 @@ var TitleScreen = Backbone.View.extend({
 
 var globalRoutes = [
 	//Name, slug/link/route, view
-	['home', '', new TitleScreen()]
+	['Home', /$/, new TitleScreen()],
+	['WhatIsPhoton', 'photon', new Photon()]
 ];
 
 
@@ -62,11 +84,13 @@ var Router = Backbone.Router.extend({
 
 	initialize: function() {
 		for (var i = 0; i < globalRoutes.length; i++) {
-			var route = globalRoutes[i];
+			(function(that){
+				var route = globalRoutes[i];
 
-			this.route(route[1], route[0], function() {
-				route[2].render();
-			});
+				that.route(route[1], route[0], function() {
+					route[2].render();
+				});
+			})(this);
 		}
 	},
 
