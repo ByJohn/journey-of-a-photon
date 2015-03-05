@@ -9,7 +9,8 @@ $(function() {
 /*------------------- Global variable -------------------*/
 
 
-var $page = $('#page');
+var $page = $('#page'),
+	fadeSpeed = 500;
 
 
 /*------------------- View/Page Class Definitions -------------------*/
@@ -38,6 +39,15 @@ var PageView = Backbone.View.extend({
 	},
 
 	pageReady: function() {
+	},
+
+	//Overwrites default method to prevent removal of the #page element
+	remove: function() {
+		this.unload();
+		// this.$el.remove();
+		this.stopListening();
+		this.undelegateEvents(); //Added this to remove all view events
+		return this;
 	}
 
 });
@@ -47,17 +57,24 @@ var ChapterPageView = PageView.extend({
 
 	initialize: function() {
 		PageView.prototype.initialize.call(this);
+		var that = this;
+
+		this.events['click button.play'] = function() {
+			// $('.chapter-title').velocity('fadeOut', { duration: fadeSpeed, complete: function() {
+				$('.chapter-title').fadeOut(fadeSpeed, function() {
+					that.videoPlay();
+				});
+			// }});
+		};
 	},
 
 	superRender: function() {
 		PageView.prototype.superRender.call(this); //Call the super/parent method
 
-		this.chapterPageSetup();
-	},
+		//After render() is called
 
-	//After render() in superRender()
-	chapterPageSetup: function() {
-		this.video = $('.main-video');
+		this.$video = $('.main-video');
+		this.video = this.$video[0];
 	},
 
 	pageReady: function() {
@@ -74,7 +91,18 @@ var ChapterPageView = PageView.extend({
 			var ratio = videoHeight / windowHeight;
 			$videoContainer.css({width: videoWidth / ratio });
 		}
-	}
+	},
+
+	videoPlay: function() {
+		console.log('play');
+		this.video.play();
+		$('.page').toggleClass('playing', true);
+	},
+
+	videoPause: function() {
+		this.video.pause();
+		$('.page').toggleClass('playing', false);
+	},
 
 });
 
@@ -139,14 +167,9 @@ var PageChapter0 = ChapterPageView.extend({
 	},
 
 	events: {
-		'click button.plop': 'next'
 	},
 
 	render: function() {
-	},
-
-	next: function() {
-		router.changePage('');
 	}
 
 });
@@ -154,11 +177,16 @@ var PageChapter0 = ChapterPageView.extend({
 
 /*------------------- Routes -------------------*/
 
+/*
+The routes to the different pages. When the webpage is loaded, the correct route is selected using the URL
+and the route object creates a new instance of the specific page object (and saves a globally-accessible reference).
+This page object instance's superRender method is then called, which prints its template on the page.
+*/
 
 var globalRoutes = [
 	//Name,  slug/link/route,  view
-	['Home', /$/, new PageTitle()],
-	['WhatIsAPhoton', 'what-is-a-photon', new PageChapter0()]
+	['Home', /$/, PageTitle],
+	['WhatIsAPhoton', 'what-is-a-photon', PageChapter0]
 ];
 
 
@@ -175,8 +203,9 @@ var Router = Backbone.Router.extend({
 				var route = globalRoutes[i];
 
 				that.route(route[1], route[0], function(args) {
-					that.currentPage = route;
-					route[2].superRender();
+					var newPage = new route[2](); //Creates a new instance of a specific page object. Its initialize method is called
+					that.currentPage = newPage; //Saves a reference to the new page object
+					newPage.superRender(); //Calls the page objects render method
 				});
 			})(this);
 		}
@@ -186,23 +215,24 @@ var Router = Backbone.Router.extend({
 
 	//Intercepts every route change call
 	execute: function(callback, args) {
-		var fadeSpeed = 500,
-			that = this;
+		var that = this;
 
-		// $page.fadeOut(fadeSpeed, function() {
-		$page.velocity('fadeOut', { duration: fadeSpeed, complete: function() {
+		$page.fadeOut(fadeSpeed, function() {
+		// $page.velocity('fadeOut', { duration: fadeSpeed, complete: function() {
 
-			if(that.currentPage) that.currentPage[2].unload(); //Calls the unload method on the current page
+			if(that.currentPage) {
+				that.currentPage.remove();
+			}
 
-			$page.html(''); //Removes all page content
+			$page.html(''); //Clears all page content
 
-			if (callback) callback.apply(this, args); //Applies the default behaviour
+			if (callback) callback.apply(that, args); //Applies the default behaviour
 
-			// $page.fadeIn(fadeSpeed, function() {
-			$page.velocity('fadeIn', { duration: fadeSpeed, complete: function() {
-				that.currentPage[2].pageReady(); //Calls the currently visible view
-			}});
-		}});
+			$page.fadeIn(fadeSpeed, function() {
+			// $page.velocity('fadeIn', { duration: fadeSpeed, complete: function() {
+				if(that.currentPage) that.currentPage.pageReady(); //Calls the currently visible view once it has faded in
+			});
+		});
 	},
 
 	//Shortcut method

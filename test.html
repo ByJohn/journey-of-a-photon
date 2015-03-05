@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+	<div class="bob"></div>
+	<script type="text/javascript">
+		var video = null;
+
+		function addVideo() {
+			$('.bob').html('<video src="http://www.w3schools.com/tags/movie.mp4" class="main-video" controls loop></video>');
+			video = $('video')[0];
+		}
+
+		function play() {
+			video.play();
+		}
+
+		function pause() {
+			video.pause();
+		}
+	</script>
+</body>
+</html>

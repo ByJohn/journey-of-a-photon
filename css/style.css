@@ -211,6 +211,17 @@ body {
 
 /*------------------- Chapter Page -------------------*/
 
+.page {
+	-webkit-transition: all 5000ms;
+			transition: all 5000ms;
+	-webkit-transition-delay: 2s;
+		transition-delay: 2s;
+}
+
+.page.playing {
+	background-color: #000;
+}
+
 .full-screen {
 	position: absolute;
 	top: 0;
