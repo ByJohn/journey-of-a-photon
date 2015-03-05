@@ -12,18 +12,25 @@ var $page = $('#page');
 
 /*------------------- Views/Pages -------------------*/
 
-
-var TitleScreen = Backbone.View.extend({
+var PageView = Backbone.View.extend({
 
 	el: '#page',
+
+	renderTemplate: function(templateIDString) {
+		var template = _.template($('#' + templateIDString).html());
+		this.$el.html(template);
+	}
+
+});
+
+var PageTitle = PageView.extend({
 
 	events: {
 		'click .begin': 'begin'
 	},
 
 	render: function() {
-		var template = _.template($('#template-title').html());
-		this.$el.html(template);
+		this.renderTemplate('template-title');
 
 		var titleText = $('.main-title').html();
 
@@ -51,17 +58,14 @@ var TitleScreen = Backbone.View.extend({
 
 });
 
-var Chapter0 = Backbone.View.extend({
-
-	el: '#page',
+var PageChapter0 = PageView.extend({
 
 	events: {
 		'click button.plop': 'next'
 	},
 
 	render: function() {
-		var template = _.template($('#template-prologue').html());
-		this.$el.html(template);
+		this.renderTemplate('template-prologue');
 	},
 
 	next: function() {
@@ -76,8 +80,8 @@ var Chapter0 = Backbone.View.extend({
 
 var globalRoutes = [
 	//Name,  slug/link/route,  view
-	['Home', /$/, new TitleScreen()],
-	['WhatIsAPhoton', 'what-is-a-photon', new Chapter0()]
+	['Home', /$/, new PageTitle()],
+	['WhatIsAPhoton', 'what-is-a-photon', new PageChapter0()]
 ];
 
 
@@ -100,13 +104,19 @@ var Router = Backbone.Router.extend({
 
 	routes: {}, //The routes are dynamically added using the globalRoutes variable
 
-	changePage: function(url) {
-		var fadeSpeed = 1000,
+	//Intercepts every route change call
+	execute: function(callback, args) {
+		var fadeSpeed = 500,
 			that = this;
+
 		$page.fadeOut(fadeSpeed, function() {
-			that.navigate(url, {trigger: true});
+			if (callback) callback.apply(this, args); //Applies the default behaviour
 			$page.fadeIn(fadeSpeed);
 		});
+	},
+
+	changePage: function(url) {
+		this.navigate(url, {trigger: true});
 	}
 
 });
