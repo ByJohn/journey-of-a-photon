@@ -68,6 +68,8 @@ html {
 input[type="submit"], button {
 	cursor: pointer;
 	outline: none;
+	-webkit-transition: all 250ms;
+			transition: all 250ms;
 }
 
 a {
@@ -209,15 +211,57 @@ body {
 
 /*------------------- Chapter Page -------------------*/
 
+.full-screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
 .video-container {
+	position: relative;
 	display: block;
 	margin: 0 auto;
 }
 
 video.main-video {
+	position: relative;
 	width: 100%;
 }
 
 .chapter-title {
-	display: none;
+	z-index: 2;
+	background-color: #0f0f0f;
+	text-align: center;
+	color: #888888;
+}
+
+.chapter-title .chapter {
+	margin-bottom: 0.4em;
+	font-size: 2.5em;
+	color: #414141;
+}
+
+.chapter-title .title {
+	font-size: 4em;
+}
+
+button.play {
+	display: inline-block;
+	margin-top: 3em;
+	padding: 0.1em 0.36em 0.2em;
+	border: 1px solid #888888;
+	background-color: transparent;
+	border-radius: 60%;
+	font-size: 2em;
+	color: #888;
+	line-height: 1;
+}
+
+button.play:hover {
+	border-color: #eee;
+	color: #eee;
+	-webkit-transform: scale(1.1);
+			transform: scale(1.1);
 }

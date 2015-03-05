@@ -8,9 +8,12 @@ $(function() {
 
 /*------------------- Global variable -------------------*/
 
+
 var $page = $('#page');
 
-/*------------------- Views/Pages -------------------*/
+
+/*------------------- View/Page Class Definitions -------------------*/
+
 
 var PageView = Backbone.View.extend({
 
@@ -26,12 +29,6 @@ var PageView = Backbone.View.extend({
 		this.renderPageTemplate(); //Render page template
 
 		this.render(); //Call child function for page-specific rendering
-
-		switch(this.options.type) {
-			case 'chapter':
-				this.chapterPageSetup();
-			break;
-		}
 	},
 
 	renderPageTemplate: function(templateIDString) {
@@ -41,12 +38,30 @@ var PageView = Backbone.View.extend({
 	},
 
 	pageReady: function() {
-		this.resizeVideo();
+	}
+
+});
+
+
+var ChapterPageView = PageView.extend({
+
+	initialize: function() {
+		PageView.prototype.initialize.call(this);
+	},
+
+	superRender: function() {
+		PageView.prototype.superRender.call(this); //Call the super/parent method
+
+		this.chapterPageSetup();
 	},
 
 	//After render() in superRender()
 	chapterPageSetup: function() {
 		this.video = $('.main-video');
+	},
+
+	pageReady: function() {
+		PageView.prototype.pageReady.call(this);
 		this.resizeVideo();
 	},
 
@@ -63,10 +78,13 @@ var PageView = Backbone.View.extend({
 
 });
 
+
+/*------------------- View/Page Instances -------------------*/
+
+
 var PageTitle = PageView.extend({
 
 	options: {
-		type: 'title',
 		pageTemplate: 'template-title'
 	},
 
@@ -113,10 +131,10 @@ var PageTitle = PageView.extend({
 
 });
 
-var PageChapter0 = PageView.extend({
+
+var PageChapter0 = ChapterPageView.extend({
 
 	options: {
-		type: 'chapter',
 		pageTemplate: 'template-prologue'
 	},
 
@@ -174,6 +192,8 @@ var Router = Backbone.Router.extend({
 		$page.fadeOut(fadeSpeed, function() {
 
 			if(that.currentPage) that.currentPage[2].unload(); //Calls the unload method on the current page
+
+			$page.html(''); //Removes all page content
 
 			if (callback) callback.apply(this, args); //Applies the default behaviour
 
