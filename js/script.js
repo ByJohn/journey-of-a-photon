@@ -189,7 +189,8 @@ var Router = Backbone.Router.extend({
 		var fadeSpeed = 500,
 			that = this;
 
-		$page.fadeOut(fadeSpeed, function() {
+		// $page.fadeOut(fadeSpeed, function() {
+		$page.velocity('fadeOut', { duration: fadeSpeed, complete: function() {
 
 			if(that.currentPage) that.currentPage[2].unload(); //Calls the unload method on the current page
 
@@ -197,10 +198,11 @@ var Router = Backbone.Router.extend({
 
 			if (callback) callback.apply(this, args); //Applies the default behaviour
 
-			$page.fadeIn(fadeSpeed, function() {
+			// $page.fadeIn(fadeSpeed, function() {
+			$page.velocity('fadeIn', { duration: fadeSpeed, complete: function() {
 				that.currentPage[2].pageReady(); //Calls the currently visible view
-			});
-		});
+			}});
+		}});
 	},
 
 	//Shortcut method
