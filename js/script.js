@@ -6,6 +6,9 @@ $(function() {
 });
 
 
+/*------------------- Global variable -------------------*/
+
+var $page = $('#page');
 
 /*------------------- Views/Pages -------------------*/
 
@@ -43,13 +46,12 @@ var TitleScreen = Backbone.View.extend({
 	},
 
 	begin: function() {
-		console.log('begin');
-		router.navigate('photon', {trigger: true});
+		router.changePage('what-is-a-photon');
 	}
 
 });
 
-var Photon = Backbone.View.extend({
+var Chapter0 = Backbone.View.extend({
 
 	el: '#page',
 
@@ -58,13 +60,12 @@ var Photon = Backbone.View.extend({
 	},
 
 	render: function() {
-		var template = '<button class="plop">What is a Photon?</button>';
+		var template = _.template($('#template-prologue').html());
 		this.$el.html(template);
 	},
 
 	next: function() {
-		console.log('next');
-		router.navigate('', {trigger: true});
+		router.changePage('');
 	}
 
 });
@@ -74,9 +75,9 @@ var Photon = Backbone.View.extend({
 
 
 var globalRoutes = [
-	//Name, slug/link/route, view
+	//Name,  slug/link/route,  view
 	['Home', /$/, new TitleScreen()],
-	['WhatIsPhoton', 'photon', new Photon()]
+	['WhatIsAPhoton', 'what-is-a-photon', new Chapter0()]
 ];
 
 
@@ -97,7 +98,16 @@ var Router = Backbone.Router.extend({
 		}
 	},
 
-	routes: {} //The routes are dynamically added using the globalRoutes variable
+	routes: {}, //The routes are dynamically added using the globalRoutes variable
+
+	changePage: function(url) {
+		var fadeSpeed = 1000,
+			that = this;
+		$page.fadeOut(fadeSpeed, function() {
+			that.navigate(url, {trigger: true});
+			$page.fadeIn(fadeSpeed);
+		});
+	}
 
 });
 
