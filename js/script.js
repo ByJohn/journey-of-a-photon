@@ -19,13 +19,46 @@ var PageView = Backbone.View.extend({
 	initialize: function() {
 	},
 
-	renderTemplate: function(templateIDString) {
+	unload: function() {
+	},
+
+	superRender: function() {
+		this.renderPageTemplate(); //Render page template
+
+		this.render(); //Call child function for page-specific rendering
+
+		switch(this.options.type) {
+			case 'chapter':
+				this.chapterPageSetup();
+			break;
+		}
+	},
+
+	renderPageTemplate: function(templateIDString) {
 		var template = _.template($('#' + this.options.pageTemplate).html());
 		this.$el.html(template);
 		return template;
 	},
 
 	pageReady: function() {
+		this.resizeVideo();
+	},
+
+	//After render() in superRender()
+	chapterPageSetup: function() {
+		this.video = $('.main-video');
+		this.resizeVideo();
+	},
+
+	resizeVideo: function() {
+		var $videoContainer = $('.video-container'),
+			videoHeight = $videoContainer.outerHeight(),
+			videoWidth = $videoContainer.outerWidth(),
+			windowHeight = $(window).height();
+		if(videoHeight > windowHeight) {
+			var ratio = videoHeight / windowHeight;
+			$videoContainer.css({width: videoWidth / ratio });
+		}
 	}
 
 });
@@ -33,6 +66,7 @@ var PageView = Backbone.View.extend({
 var PageTitle = PageView.extend({
 
 	options: {
+		type: 'title',
 		pageTemplate: 'template-title'
 	},
 
@@ -41,8 +75,6 @@ var PageTitle = PageView.extend({
 	},
 
 	render: function() {
-		this.renderTemplate();
-
 		this.addTextShadow();
 	},
 
@@ -84,6 +116,7 @@ var PageTitle = PageView.extend({
 var PageChapter0 = PageView.extend({
 
 	options: {
+		type: 'chapter',
 		pageTemplate: 'template-prologue'
 	},
 
@@ -92,7 +125,6 @@ var PageChapter0 = PageView.extend({
 	},
 
 	render: function() {
-		this.renderTemplate();
 	},
 
 	next: function() {
@@ -126,7 +158,7 @@ var Router = Backbone.Router.extend({
 
 				that.route(route[1], route[0], function(args) {
 					that.currentPage = route;
-					route[2].render();
+					route[2].superRender();
 				});
 			})(this);
 		}
@@ -140,13 +172,18 @@ var Router = Backbone.Router.extend({
 			that = this;
 
 		$page.fadeOut(fadeSpeed, function() {
+
+			if(that.currentPage) that.currentPage[2].unload(); //Calls the unload method on the current page
+
 			if (callback) callback.apply(this, args); //Applies the default behaviour
+
 			$page.fadeIn(fadeSpeed, function() {
 				that.currentPage[2].pageReady(); //Calls the currently visible view
 			});
 		});
 	},
 
+	//Shortcut method
 	changePage: function(url) {
 		this.navigate(url, {trigger: true});
 	}
