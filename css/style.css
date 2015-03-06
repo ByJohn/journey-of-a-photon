@@ -292,6 +292,13 @@ button.play:hover {
 	position: absolute;
 	width: 100%;
 	overflow: hidden;
+	opacity: 0.7;
+	-webkit-transition: all 700ms;
+			transition: all 700ms;
+}
+
+.tangents:hover {
+	opacity: 1;
 }
 
 .tangents ul {
@@ -302,10 +309,12 @@ button.play:hover {
 }
 
 .tangents li {
-	list-style: none;
 	display: inline-block;
+	position: relative;
+	list-style: none;
+	bottom: 0;
 	margin: 0;
-	margin-right: 0.7em;
+	margin-right: 0.4em;
 	padding: 0.5em;
 	border-top: 2px solid transparent;
 	border-bottom-left-radius: 3px;
@@ -313,8 +322,8 @@ button.play:hover {
 	font-size: 1.1em;
 	line-height: 1;
 	cursor: pointer;
-	-webkit-transition: all 250ms;
-			transition: all 250ms;
+	-webkit-transition: background 250ms, border 250ms;
+			transition: background 250ms, border 250ms;
 }
 
 .tangents li:hover {
@@ -324,7 +333,7 @@ button.play:hover {
 
 .tangents li .text {
 	display: inline-block;
-	width: auto;
+	/*width: 0;*/
 	color: #888;
 	overflow: hidden;
 	white-space: nowrap;

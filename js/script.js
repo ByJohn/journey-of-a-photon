@@ -78,6 +78,10 @@ var ChapterPageView = PageView.extend({
 		this.videoTag.removeEventListener('pause', this.videoPauseEvent, false );
 
 		Popcorn.destroy(this.video);
+
+		_.each(this.tangents, function(tangent) {
+			tangent.buttonView.remove(); //Removes every tangent button view
+		});
 	},
 
 	superRender: function() {
@@ -128,18 +132,28 @@ var ChapterPageView = PageView.extend({
 
 	queTangents: function() {
 		var that = this,
-			$tagents = $('.tangents');
+			$tangents = $('.tangents'),
+			i = 0;
 			
-		$tagents.html('<ul></ul>');
+		$tangents.html('<ul></ul>');
 
-		var $tangentsUL = $tagents.find('ul');
+		var $tangentsUL = $tangents.find('ul');
 
 		_.each(this.tangents, function(tangent) {
-			$tangentsUL.append('<li><img src="images/icon-' + tangent.icon + '.png" alt="' + tangent.moreInfoOn + '" /><span class="text">More info on <span class="topic">' + tangent.moreInfoOn + '</span></span></li>');
-		});
+			tangent.buttonView = new TangentButtonView({tangent: tangent, i: i}); //Creates a tangent button view instance
+			tangent.revealed = false;
 
-		this.video.cue(5, function() {
-			console.log('at 5 secs');
+			$tangentsUL.append(tangent.buttonView.el); //Adds the tangent button to the <ul>
+
+			//Cues the tangent popup
+			that.video.cue(tangent.time, function() {
+				if(!tangent.revealed) {
+					tangent.revealed = true;
+					tangent.buttonView.reveal();
+				}
+			});
+
+			i++;
 		});
 	},
 
@@ -170,6 +184,61 @@ var ChapterPageView = PageView.extend({
 	videoPauseEvent: function(e) {
 		$('.page').toggleClass('playing', false);
 	},
+
+});
+
+
+var TangentButtonView = Backbone.View.extend({
+
+	options: {
+		hoverSpeed: 250,
+		slideDownSpeed: 2000
+	},
+
+	tagName: 'li',
+
+	events: {
+		'mouseenter': 'openText',
+		'mouseleave': 'closeText'
+	},
+
+	initialize: function(options) {
+		this.tangent = options.tangent;
+		this.canAnimateHover = false;
+
+		this.$el.attr('data-id', options.i);
+		this.render();
+		this.$el.css({display: '', bottom: '2em'});
+	},
+
+	render: function() {
+		this.$el.html('<img src="images/icon-' + this.tangent.icon + '.png" alt="' + this.tangent.moreInfoOn + '" /><span class="text">More info on <span class="topic">' + this.tangent.moreInfoOn + '</span></span>'); //This should be replaced by the template file (already in index.html)
+		return this;
+	},
+
+	openText: function(customSpeed) {
+		if(this.canAnimateHover) {
+			var $text = this.$el.find('.text');
+			var width = $text.stop(true).css('width', 'auto').width();
+			$text.css('width', 0).animate({width: width}, customSpeed || this.options.hoverSpeed);
+		}
+	},
+
+	closeText: function(customSpeed) {
+		if(this.canAnimateHover) {
+			this.$el.find('.text').stop(true).animate({width: 0}, customSpeed || this.options.hoverSpeed);
+		}
+	},
+
+	reveal: function() {
+		var that = this;
+		this.$el.css({display: ''}).animate({bottom: 0}, this.options.slideDownSpeed, function() {
+			setTimeout(function() {
+				that.canAnimateHover = true;
+				that.closeText(2000);
+			}, 5000)
+		});
+	}
 
 });
 
@@ -236,13 +305,13 @@ var PageChapter0 = ChapterPageView.extend({
 	tangents: [
 		{
 			moreInfoOn: '"theorised"',
-			time: 2,
+			time: 0.4,
 			icon: 'bulb',
 			template: 'tangent-theorised'
 		},
 		{
 			moreInfoOn: 'elementary particles',
-			time: 4.5,
+			time: 3,
 			icon: 'particle',
 			template: 'tangent-elementary-particles'
 		}
