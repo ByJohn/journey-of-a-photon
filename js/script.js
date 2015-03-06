@@ -20,9 +20,12 @@ var PageView = Backbone.View.extend({
 
 	el: '#page',
 
+	options: {},
+
 	initialize: function() {
 	},
 
+	//Extend this method to unload content
 	unload: function() {
 	},
 
@@ -41,10 +44,10 @@ var PageView = Backbone.View.extend({
 	pageReady: function() {
 	},
 
-	//Overwrites default method to prevent removal of the #page element
+	//Overwrites default method to prevent removal of the #page element. Best not to extend with child classes
 	remove: function() {
 		this.unload();
-		// this.$el.remove();
+		// this.$el.remove(); //Commented out to prevent removal
 		this.stopListening();
 		this.undelegateEvents(); //Added this to remove all view events
 		return this;
@@ -54,6 +57,8 @@ var PageView = Backbone.View.extend({
 
 
 var ChapterPageView = PageView.extend({
+
+	subtitles: [],
 
 	initialize: function() {
 		PageView.prototype.initialize.call(this);
@@ -68,13 +73,21 @@ var ChapterPageView = PageView.extend({
 		};
 	},
 
+	unload: function() {
+		PageView.prototype.unload.call(this);
+
+		this.videoTag.removeEventListener('playing', this.videoPlayEvent, false );
+		this.videoTag.removeEventListener('pause', this.videoPauseEvent, false );
+
+		Popcorn.destroy(this.video);
+	},
+
 	superRender: function() {
 		PageView.prototype.superRender.call(this); //Call the super/parent method
 
 		//After render() is called
 
-		this.$video = $('.main-video');
-		this.video = this.$video[0];
+		this.setupVideo();
 	},
 
 	pageReady: function() {
@@ -93,14 +106,43 @@ var ChapterPageView = PageView.extend({
 		}
 	},
 
+	//Sets up up variables, events and other video settings
+	setupVideo: function() {
+		this.$video = $('.main-video');
+		this.videoTag = this.$video[0];
+		this.video = Popcorn(this.videoTag);
+
+		this.videoTag.addEventListener('playing', this.videoPlayEvent, false );
+		this.videoTag.addEventListener('pause', this.videoPauseEvent, false );
+
+		this.queSubtitles();
+	},
+
+	queSubtitles: function() {
+		var that = this;
+		_.each(this.subtitles, function(subtitle) {
+			that.video.subtitle({
+				start: subtitle[0],
+				end: subtitle[1],
+				text: subtitle[2],
+				target: 'subtitles'
+			});
+		});
+	},
+
 	videoPlay: function() {
-		console.log('play');
 		this.video.play();
-		$('.page').toggleClass('playing', true);
 	},
 
 	videoPause: function() {
 		this.video.pause();
+	},
+
+	videoPlayEvent: function(e) {
+		$('.page').toggleClass('playing', true);
+	},
+
+	videoPauseEvent: function(e) {
 		$('.page').toggleClass('playing', false);
 	},
 
@@ -165,6 +207,53 @@ var PageChapter0 = ChapterPageView.extend({
 	options: {
 		pageTemplate: 'template-prologue'
 	},
+
+	subtitles: [
+		[0.6, 2.2, 'Theorised by Albert Einstein'],
+		[2.2, 4.9, 'photons are massless, elementary particles'],
+		[4.9, 7, 'sometimes called "tiny packets of light"'],
+		[7, 9.2, 'that carry the electromagnetic force'],
+		[9.2, 12.1, 'Photons exhibit wave–particle duality'],
+		[12.1, 14, 'which means it sometimes behaves like a wave'],
+		[14, 16.1, 'and sometimes behaves like a particle'],
+		[16.1, 17.2, 'For our purposes'],
+		[17.2, 19.3, 'we will imagine our photons as particles'],
+		[19.3, 21.5, 'and we can think of electromagnetic waves'],
+		[21.5, 23.3, 'as a stream of particles'],
+		[23.7, 25.9, 'Although commonly associated only with visible light'],
+		[25.9, 27.7, 'they are also the particles involved'],
+		[27.7, 30.8, 'with the transmission of the rest of the electromagnetic spectrum'],
+		[30.8, 31.3, 'That is'],
+		[31.3, 32, 'gamma rays'],
+		[32, 32.4, 'x rays'],
+		[32.4, 33.1, 'ultraviolet light'],
+		[33.1, 33.8, 'infrared light'],
+		[33.8, 34.4, 'microwaves'],
+		[34.4, 35.5, 'and radio waves'],
+		[35.9, 37.1, 'What differentiates these classes'],
+		[37.1, 39.2, 'is their wavelength, or frequency'],
+		[39.2, 40.1, 'For the most part'],
+		[40.1, 43.4, 'we will stick to photons with a wavelength in the visible light range'],
+		[43.4, 46.5, 'that\'s about 390 to 700 nanometres'],
+		[46.7, 49.2, 'Sometimes called "electromagnetic radiation"'],
+		[49.2, 53, 'photons are commonly emitted by natural and man-made processes'],
+		[53, 54.7, 'like microwaves from mobile phones'],
+		[54.7, 56.1, 'radio waves from radar'],
+		[56.1, 58.7, 'and infrared light from warm-blooded organisms'],
+		[58.7, 59.6, 'That\'s right'],
+		[59.6, 62.6, 'you are emitting photons in the infrared range right now'],
+		[62.6, 64, 'unless you\'re dead, of course']
+	],
+
+	/*
+	Firstly, lets get to grips with what photons actually are. Theorised by Albert Einstein, photons are massless, elementary particles, sometimes called "tiny packets of light", that carry the electromagnetic force.
+
+	Photons exhibit wave–particle duality, which means it sometimes behaves like a wave and sometimes behaves like a particle. For our purposes, we will imagine our photons as particles and we can think of electromagnetic waves as a stream of particles.
+
+	Although commonly associated only with visible light, they are also the particles involved with the transmission of the rest of the electromagnetic spectrum. That is; gamma rays, x-rays, ultraviolet light, infrared light, microwaves and radio waves. What differentiates these classes is their wavelength, or frequency. For the most part, we will stick to photons with a wavelength in the visible light range, that's about 390 to 700 nanometres.
+
+	Sometimes called "electromagnetic radiation", photons, are commonly emitted by natural and man-made processes, like microwaves from mobile phones/WiFi, radio waves from radar and infrared light from warm-blooded organisms. That's right, you are emitting photons in the infrared range right now... unless you're dead, of course.
+	*/
 
 	events: {
 	},
