@@ -58,6 +58,8 @@ var PageView = Backbone.View.extend({
 
 var ChapterPageView = PageView.extend({
 
+	tangents: [],
+
 	subtitles: [],
 
 	initialize: function() {
@@ -65,11 +67,7 @@ var ChapterPageView = PageView.extend({
 		var that = this;
 
 		this.events['click button.play'] = function() {
-			// $('.chapter-title').velocity('fadeOut', { duration: fadeSpeed, complete: function() {
-				$('.chapter-title').fadeOut(fadeSpeed, function() {
-					that.videoPlay();
-				});
-			// }});
+			that.playButtonClicked();
 		};
 	},
 
@@ -88,6 +86,15 @@ var ChapterPageView = PageView.extend({
 		//After render() is called
 
 		this.setupVideo();
+	},
+
+	playButtonClicked: function() {
+		var that = this;
+		// $('.chapter-title').velocity('fadeOut', { duration: fadeSpeed, complete: function() {
+			$('.chapter-title').fadeOut(fadeSpeed, function() {
+				that.videoPlay();
+			});
+		// }});
 	},
 
 	pageReady: function() {
@@ -115,7 +122,25 @@ var ChapterPageView = PageView.extend({
 		this.videoTag.addEventListener('playing', this.videoPlayEvent, false );
 		this.videoTag.addEventListener('pause', this.videoPauseEvent, false );
 
+		this.queTangents();
 		this.queSubtitles();
+	},
+
+	queTangents: function() {
+		var that = this,
+			$tagents = $('.tangents');
+			
+		$tagents.html('<ul></ul>');
+
+		var $tangentsUL = $tagents.find('ul');
+
+		_.each(this.tangents, function(tangent) {
+			$tangentsUL.append('<li><img src="images/icon-' + tangent.icon + '.png" alt="' + tangent.moreInfoOn + '" /><span class="text">More info on <span class="topic">' + tangent.moreInfoOn + '</span></span></li>');
+		});
+
+		this.video.cue(5, function() {
+			console.log('at 5 secs');
+		});
 	},
 
 	queSubtitles: function() {
@@ -208,6 +233,21 @@ var PageChapter0 = ChapterPageView.extend({
 		pageTemplate: 'template-prologue'
 	},
 
+	tangents: [
+		{
+			moreInfoOn: '"theorised"',
+			time: 2,
+			icon: 'bulb',
+			template: 'tangent-theorised'
+		},
+		{
+			moreInfoOn: 'elementary particles',
+			time: 4.5,
+			icon: 'particle',
+			template: 'tangent-elementary-particles'
+		}
+	],
+
 	subtitles: [
 		[0.6, 2.2, 'Theorised by Albert Einstein'],
 		[2.2, 4.9, 'photons are massless, elementary particles'],
@@ -244,16 +284,6 @@ var PageChapter0 = ChapterPageView.extend({
 		[59.6, 62.6, 'you are emitting photons in the infrared range right now'],
 		[62.6, 64, 'unless you\'re dead, of course']
 	],
-
-	/*
-	Firstly, lets get to grips with what photons actually are. Theorised by Albert Einstein, photons are massless, elementary particles, sometimes called "tiny packets of light", that carry the electromagnetic force.
-
-	Photons exhibit wave–particle duality, which means it sometimes behaves like a wave and sometimes behaves like a particle. For our purposes, we will imagine our photons as particles and we can think of electromagnetic waves as a stream of particles.
-
-	Although commonly associated only with visible light, they are also the particles involved with the transmission of the rest of the electromagnetic spectrum. That is; gamma rays, x-rays, ultraviolet light, infrared light, microwaves and radio waves. What differentiates these classes is their wavelength, or frequency. For the most part, we will stick to photons with a wavelength in the visible light range, that's about 390 to 700 nanometres.
-
-	Sometimes called "electromagnetic radiation", photons, are commonly emitted by natural and man-made processes, like microwaves from mobile phones/WiFi, radio waves from radar and infrared light from warm-blooded organisms. That's right, you are emitting photons in the infrared range right now... unless you're dead, of course.
-	*/
 
 	events: {
 	},
