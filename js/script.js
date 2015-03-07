@@ -66,8 +66,18 @@ var ChapterPageView = PageView.extend({
 		PageView.prototype.initialize.call(this);
 		var that = this;
 
+		//Default events are created here so that the event property can be defined by the child instance
+
 		this.events['click button.play'] = function() {
 			that.playButtonClicked();
+		};
+
+		this.events['click .tangents li'] = function(e) {
+			that.tangentButtonClicked(e);
+		};
+
+		this.events['click .close-tangent-popup'] = function(e) {
+			that.hideTangentBox();
 		};
 	},
 
@@ -76,6 +86,7 @@ var ChapterPageView = PageView.extend({
 
 		this.videoTag.removeEventListener('playing', this.videoPlayEvent, false );
 		this.videoTag.removeEventListener('pause', this.videoPauseEvent, false );
+		this.videoTag.removeEventListener('ended', this.videoEndEvent.bind(this), false );
 
 		Popcorn.destroy(this.video);
 
@@ -88,6 +99,8 @@ var ChapterPageView = PageView.extend({
 		PageView.prototype.superRender.call(this); //Call the super/parent method
 
 		//After render() is called
+
+		this.$tangentPopup = $('.tangent-popup');
 
 		this.setupVideo();
 	},
@@ -122,9 +135,15 @@ var ChapterPageView = PageView.extend({
 		this.$video = $('.main-video');
 		this.videoTag = this.$video[0];
 		this.video = Popcorn(this.videoTag);
+		this.watching = true; //If true, the video is being watched, so when the tangent box is opened and closed, it will pause and play the video in the background
 
+		this.video.mute(); //Mutes the video while development is underway
+		this.video.controls(true);
+
+		//Video events. When adding new events, add the event removal line to the unload method
 		this.videoTag.addEventListener('playing', this.videoPlayEvent, false );
 		this.videoTag.addEventListener('pause', this.videoPauseEvent, false );
+		this.videoTag.addEventListener('ended', this.videoEndEvent.bind(this), false );
 
 		this.queTangents();
 		this.queSubtitles();
@@ -142,6 +161,7 @@ var ChapterPageView = PageView.extend({
 		_.each(this.tangents, function(tangent) {
 			tangent.buttonView = new TangentButtonView({tangent: tangent, i: i}); //Creates a tangent button view instance
 			tangent.revealed = false;
+			tangent.html = $('#' + tangent.templateID).html();
 
 			$tangentsUL.append(tangent.buttonView.el); //Adds the tangent button to the <ul>
 
@@ -181,9 +201,40 @@ var ChapterPageView = PageView.extend({
 		$('.page').toggleClass('playing', true);
 	},
 
+	//Called when the video is stopped/paused
 	videoPauseEvent: function(e) {
 		$('.page').toggleClass('playing', false);
 	},
+
+	videoEndEvent: function(e) {
+		this.videoPauseEvent(e);
+		this.watching = false;
+	},
+
+
+	tangentButtonClicked: function(e) {
+		var $li = $(e.currentTarget),
+			id = $li.attr('data-id')
+			tanget = this.tangents[id];
+
+		this.showTangentBox(tanget);
+	},
+
+	showTangentBox: function(tangent) {
+		if(this.watching) this.video.pause();
+
+		var template = _.template($('#template-tangent-popup-content').html());
+		this.$tangentPopup.find('.tangent-popup-content').html(template(tangent));
+
+		this.$tangentPopup.fadeIn(500);
+	},
+
+	hideTangentBox: function() {
+		var that = this;
+		this.$tangentPopup.fadeOut(500, function() {
+			if(that.watching) that.video.play();
+		});
+	}
 
 });
 
@@ -197,6 +248,7 @@ var TangentButtonView = Backbone.View.extend({
 
 	tagName: 'li',
 
+	//The click event is handled in the PageView because it has direct access to pause the video
 	events: {
 		'mouseenter': 'openText',
 		'mouseleave': 'closeText'
@@ -208,7 +260,7 @@ var TangentButtonView = Backbone.View.extend({
 
 		this.$el.attr('data-id', options.i);
 		this.render();
-		this.$el.css({display: '', bottom: '2em'});
+		this.$el.css({display: 'none', bottom: '2em'});
 	},
 
 	render: function() {
@@ -218,9 +270,11 @@ var TangentButtonView = Backbone.View.extend({
 
 	openText: function(customSpeed) {
 		if(this.canAnimateHover) {
-			var $text = this.$el.find('.text');
-			var width = $text.stop(true).css('width', 'auto').width();
-			$text.css('width', 0).animate({width: width}, customSpeed || this.options.hoverSpeed);
+			var $text = this.$el.find('.text'),
+				currentWidth = $text.width(),
+				maxWidth = $text.stop(true).css('width', 'auto').width();
+
+			$text.stop(true).css({width: currentWidth}).animate({width: maxWidth}, customSpeed || this.options.hoverSpeed);
 		}
 	},
 
@@ -304,16 +358,25 @@ var PageChapter0 = ChapterPageView.extend({
 
 	tangents: [
 		{
+			title: '"Theorised"',
 			moreInfoOn: '"theorised"',
 			time: 0.4,
 			icon: 'bulb',
-			template: 'tangent-theorised'
+			templateID: 'tangent-theorised'
 		},
 		{
+			title: 'Elementary Particles',
 			moreInfoOn: 'elementary particles',
 			time: 3,
 			icon: 'particle',
-			template: 'tangent-elementary-particles'
+			templateID: 'tangent-elementary-particles'
+		},
+		{
+			title: 'The Four Fundamental Forces',
+			moreInfoOn: 'the 4 fundamental forces',
+			time: 7,
+			icon: 'fundamental-force',
+			templateID: 'tangent-fundamental-forces'
 		}
 	],
 

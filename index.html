@@ -30,9 +30,9 @@
 			</div>
 		</script>
 
-		<script type="text/template" id="template-tangent">
-			<img src="images/icon-<%- icon %>.png" alt="<%- moreInfoOn %>"><span class="text" style="width: 0px;">More info on <span class="topic"><%- moreInfoOn %></span></span>
-		</script>
+
+		<!-- Page Templates -->
+
 
 		<script type="text/template" id="template-prologue">
 			<div class="page page-prologue">
@@ -57,9 +57,59 @@
 					<div class="subtitles" id="subtitles"></div>
 					
 					<div class="tangents"></div>
-
+				</div>
+				<div class="tangent-popup full-screen">
+					<div class="cover full-screen close-tangent-popup"></div>
+					<div class="box centre">
+						<button class="close-tangent-popup close-small">&#10005;</button>
+						<div class="tangent-popup-content"></div>
+						<button class="close-tangent-popup close-large">Close</button>
+					</div>
 				</div>
 			</div>
+		</script>
+
+
+		<!-- Tangent Button -->
+		<script type="text/template" id="template-tangent">
+			<img src="images/icon-<%- icon %>.png" alt="<%- moreInfoOn %>"><span class="text" style="width: 0px;">More info on <span class="topic"><%- moreInfoOn %></span></span>
+		</script>
+
+		<!-- Tangent Popup Content -->
+		<script type="text/template" id="template-tangent-popup-content">
+			<h2 class="title">
+				<img src="images/icon-<%- icon %>.png" alt="<%- moreInfoOn %>" />
+				<%= title %>
+			</h2>
+			<div class="text-content cf">
+				<%= html %>
+			</div>
+		</script>
+
+
+		<!-- Tangent Templates -->
+
+
+		<script type="text/template" id="tangent-theorised">
+			<p>In the context of science, to "Theorise" means to form an explanation, backed by evidence, gathered from extensive scientific method and repeated observation and experimentation.</p>
+		</script>
+
+		<script type="text/template" id="tangent-elementary-particles">
+			<p>Also called fundamental particles, elementary particles are the smallest particles known to science. Quarks, a type of elementary particle, are combined to form protons and neutrons (subatomic particles). Then, along with some electrons, they form the structure of a single atom.</p>
+			<p>Elementary particles have an unknown substructure, which means we are unsure if they themselves are made up of even smaller particles.</p>
+			<img src="images/Standard_Model_of_Elementary_Particles.svg.png" alt="Elementary Particles" class="align-centre white padding" />
+		</script>
+
+		<script type="text/template" id="tangent-fundamental-forces">
+			<p>The fundamental forces, also called the fundamental interactions or interactive forces are the interactions between physical things in the universe down to its most basic form. They are as follows:</p>
+			<ul>
+				<li>Gravitation</li>
+				<li>Weak nuclear</li>
+				<li>Electromagnetic</li>
+				<li>Strong nuclear</li>
+			</ul>
+			<p>Gravity is the attractive force between all bodies of mass in the universe. The weak nuclear force is responsible for nuclear fission and radioactive decay. The electromagnetic force is involved with the interaction of electrically charged particles in the form of electromagnetic fields, like magnetic fields and light. The strong nuclear force holds together the nucleus of atoms.</p>
+			<p>Gravity is the weakest of the four, but due to its infinite range, is the only one that matters on large scales.</p>
 		</script>
 
 	</div>
