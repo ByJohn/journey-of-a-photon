@@ -377,6 +377,20 @@ var PageChapter0 = ChapterPageView.extend({
 			time: 7,
 			icon: 'fundamental-force',
 			templateID: 'tangent-fundamental-forces'
+		},
+		{
+			title: 'The Double-Slit Experiment',
+			moreInfoOn: 'the double-slit experiment',
+			time: 15,
+			icon: 'double-slit',
+			templateID: 'tangent-double-slit'
+		},
+		{
+			title: 'wavelength-frequency correlation',
+			moreInfoOn: 'Wavelength-Frequency Correlation',
+			time: 37,
+			icon: 'wave',
+			templateID: 'tangent-wavelength-frequency'
 		}
 	],
 

@@ -162,6 +162,12 @@ body {
 	text-decoration: underline;
 }
 
+.text-content video {
+	width: 100%;
+	height: auto;
+	margin-bottom: 1em;
+}
+
 /*------------------- Image Styles -------------------*/
 
 .text-content img {
@@ -169,19 +175,19 @@ body {
 	border-radius: 3px;
 }
 
-img.align-centre {
+.align-centre {
 	display: block;
 	margin: 0 auto 1em;
 }
 
-img.align-left {
+.align-left {
 	float: left;
 	margin-right: 0.3em;
 	margin-bottom: 0.3em;
 }
 
-img.align-right {
-	float: left;
+.align-right {
+	float: right;
 	margin-left: 0.3em;
 	margin-bottom: 0.3em;
 }
