@@ -40,7 +40,7 @@
 					<div class="centre">
 						<h2 class="chapter">- Prologue -</h2>
 						<h1 class="title">What is a Photon?</h1>
-						<button class="play">&#9656;</button>
+						<button class="play circle">&#9656;</button>
 					</div>
 				</div>
 				<div class="under-title full-screen">
@@ -56,7 +56,19 @@
 
 					<div class="subtitles" id="subtitles"></div>
 					
-					<div class="tangents"></div>
+					<div class="tangents tangent-items"></div>
+				</div>
+				<div class="end-video full-screen">
+					<div class="centre">
+						<nav>
+							<button class="replay circle" title="Replay">&#8635;</button>
+							<button class="next circle" title="Continue">&rarr;</button>
+						</nav>
+						<div class="end-tangents">
+							<h3>More info on</h3>
+							<ul class="tangent-items"></ul>
+						</div>
+					</div>
 				</div>
 				<div class="tangent-popup full-screen">
 					<div class="cover full-screen close-tangent-popup"></div>
@@ -91,17 +103,18 @@
 
 
 		<script type="text/template" id="tangent-theorised">
-			<p>In the context of science, to "Theorise" means to form an explanation, backed by evidence, gathered from extensive scientific method and repeated observation and experimentation.</p>
+			<p>In the context of science, to "theorise" means to form an explanation, backed by evidence, gathered from extensive scientific method and repeated observation and experimentation.</p>
 		</script>
 
 		<script type="text/template" id="tangent-elementary-particles">
 			<p>Also called fundamental particles, elementary particles are the smallest particles known to science. Quarks, a type of elementary particle, are combined to form protons and neutrons (subatomic particles). Then, along with some electrons, they form the structure of a single atom.</p>
 			<p>Elementary particles have an unknown substructure, which means we are unsure if they themselves are made up of even smaller particles.</p>
+			<p>Here are all the, currently known, elementary particles:</p>
 			<img src="images/Standard_Model_of_Elementary_Particles.svg.png" alt="Elementary Particles" class="align-centre white padding" />
 		</script>
 
 		<script type="text/template" id="tangent-fundamental-forces">
-			<p>The fundamental forces, also called the fundamental interactions or interactive forces are the interactions between physical things in the universe down to its most basic form. They are as follows:</p>
+			<p>The fundamental forces, also called the fundamental interactions or interactive forces, are the interactions between physical things in the universe down to its most basic form. They are as follows:</p>
 			<ul>
 				<li>Gravitation</li>
 				<li>Weak nuclear</li>
@@ -120,7 +133,7 @@
 				but you can still<a href="video/Double Slit.mp4">download it</a>.
 			</video>
 
-			<p>Firing photons individually through a single slit eventually creates a single band of light on the screen, acting much like a particle. But firing photons individually through a double slit produces an interference pattern, like that of two waves. It is as if each photon is going through both slits at the same time and colliding with itself.</p>
+			<p>Firing photons individually through a single slit eventually creates a single band of light on the screen, acting much like a particle. But firing photons individually through a double slit produces an interference pattern, like that of two waves. Interference patterns are formed when the waves from each slit collide and their peaks and troughs cancel each other out. It is as if each photon is going through both slits at the same time and colliding with itself.</p>
 
 			<p>However, things <span>get</span> even more strange when we try to detect which slit the photon goes through using a detector. When we detect which slit each photons goes through, the individual photons eventually create a double band pattern, as if they are particles, not waves. It appears that the photons change their behaviour, simply by being observed (detecting which slit they went through).</p>
 		</script>
@@ -128,7 +141,7 @@
 		<script type="text/template" id="tangent-wavelength-frequency">
 			<p>The wavelength and frequency of a wave are correlated; as the wavelength increases, the frequency decreases.</p>
 			<img src="images/Wavelength.gif" alt="Wavelength" />
-			<p>Because the wavelengths involved in the electromagnetic spectrum are so broad, many length unit of measure are used, from kilometres to nanometres.</p>
+			<p>Because the wavelengths involved in the electromagnetic spectrum are so broad, many units of measurement are used, from nanometres to kilometres.</p>
 			<img src="images/Frequency.gif" alt="Frequency" />
 			<p>Frequency is measured in hertz and is calculated by counting the amount of wave peaks to pass a point in one second.</p>
 		</script>

@@ -72,7 +72,11 @@ var ChapterPageView = PageView.extend({
 			that.playButtonClicked();
 		};
 
-		this.events['click .tangents li'] = function(e) {
+		this.events['click button.replay'] = function() {
+			that.replayButtonClicked();
+		};
+
+		this.events['click .tangent-items li'] = function(e) {
 			that.tangentButtonClicked(e);
 		};
 
@@ -101,6 +105,7 @@ var ChapterPageView = PageView.extend({
 		//After render() is called
 
 		this.$tangentPopup = $('.tangent-popup');
+		this.$endVideo = $('.end-video');
 
 		this.setupVideo();
 	},
@@ -157,6 +162,7 @@ var ChapterPageView = PageView.extend({
 		$tangents.html('<ul></ul>');
 
 		var $tangentsUL = $tangents.find('ul');
+		var $tangentsEndUL = $('.end-tangents ul');
 
 		_.each(this.tangents, function(tangent) {
 			tangent.buttonView = new TangentButtonView({tangent: tangent, i: i}); //Creates a tangent button view instance
@@ -164,6 +170,8 @@ var ChapterPageView = PageView.extend({
 			tangent.html = $('#' + tangent.templateID).html();
 
 			$tangentsUL.append(tangent.buttonView.el); //Adds the tangent button to the <ul>
+
+			$tangentsEndUL.append('<li data-id="' + i + '"><img src="images/icon-' + tangent.icon + '.png" alt="' + tangent.title + '" /><div class="title">' + tangent.title + '</div></li>'); //Adds the tangent end button to the end <ul>
 
 			//Cues the tangent popup
 			that.video.cue(tangent.time, function() {
@@ -207,8 +215,19 @@ var ChapterPageView = PageView.extend({
 	},
 
 	videoEndEvent: function(e) {
-		this.videoPauseEvent(e);
+		var that = this;
+		this.video.pause();
 		this.watching = false;
+		this.$endVideo.delay(1000).fadeIn(500, function() {
+			that.video.pause();
+		});
+	},
+
+	replayButtonClicked: function() {
+		this.watching = true;
+		this.video.currentTime(0);
+		this.video.play();
+		this.$endVideo.delay(100).fadeOut(500);
 	},
 
 
@@ -386,8 +405,8 @@ var PageChapter0 = ChapterPageView.extend({
 			templateID: 'tangent-double-slit'
 		},
 		{
-			title: 'wavelength-frequency correlation',
-			moreInfoOn: 'Wavelength-Frequency Correlation',
+			title: 'Wavelength & Frequency',
+			moreInfoOn: 'wavelength & frequency',
 			time: 37,
 			icon: 'wave',
 			templateID: 'tangent-wavelength-frequency'
