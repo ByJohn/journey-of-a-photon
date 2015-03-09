@@ -1,16 +1,135 @@
 $(function() {
 	// < IE9
-	if(!Modernizr.csstransforms) {
+	if(!Modernizr.csstransforms || !Modernizr.video) {
 		alert('For the best experience, please use a more modern web browser, like Google Chrome or Mozilla Firefox.');
 	}
 });
 
 
-/*------------------- Global variable -------------------*/
+/*------------------- Global Variables -------------------*/
 
 
-var $page = $('#page'),
-	fadeSpeed = 500;
+var globalOptions = {
+	$page: $('#page'),
+	fadeSpeed: 500
+};
+
+
+/*------------------- Audio Player -------------------*/
+
+
+var music = {
+
+	$player: $('audio#music'),
+
+	maxVolume: 0.2,
+
+	initialize: function() {
+		this.player = this.$player[0];
+	},
+
+	/* --- Basic start-stop controls --- */
+
+	play: function() {
+		this.player.play();
+		return this;
+	},
+
+	pause: function() {
+		this.player.pause();
+		return this;
+	},
+
+	isPaused: function() {
+		return this.player.paused;
+	},
+
+	/* --- Tracking --- */
+
+	goTo: function(seconds) {
+		if(this.player.readyState> 4) this.player.currentTime = seconds;
+		else //console.log('Audio not ready');
+		return this;
+	},
+
+	goToStart: function() {
+		this.goTo(0);
+		return this;
+	},
+
+	/* --- Volume --- */
+
+	setVolume: function(val) {
+		if(val > this.getMaxVolume()) val = this.getMaxVolume();
+
+		this.player.volume = val;
+		return this;
+	},
+
+	getVolume: function() {
+		return this.player.volume;
+	},
+
+	/* --- Max volume --- */
+
+	setMaxVolume: function(val) {
+		this.maxVolume = val;
+		if(this.getVolume() > val) this.fadeTo(val, 1000);
+		return this;
+	},
+
+	getMaxVolume: function() {
+		return this.maxVolume;
+	},
+
+	/* --- Fade controls --- */
+
+	fadeTo: function(volume, speed, callback) {
+		var vol = volume;
+		if(vol > this.getMaxVolume()) vol = this.getMaxVolume();
+
+		this.$player.animate({volume: vol}, speed, function() {
+			if(typeof(callback) == 'function') callback();
+		});
+	},
+
+	fadeIn: function(speed, callback) {
+		this.fadeTo(this.getMaxVolume(), speed, function() {
+			if(typeof(callback) == 'function') callback();
+		});
+	},
+
+	fadeOut: function(speed, callback) {
+		this.fadeTo(0, speed, function() {
+			if(typeof(callback) == 'function') callback();
+		});
+	},
+
+	/* --- Change song --- */
+
+	changeSong: function(newSong) {
+		var currentlyPlaying = !this.isPaused();
+
+		this.player.src = 'audio/' + newSong + '.mp3';
+
+		if(currentlyPlaying) this.play();
+
+		return this;
+	},
+
+	changeSongSmooth: function(newSong, callback) {
+		var fadeSpeed = 1000,
+			that = this;
+		this.fadeOut(fadeSpeed, function() {
+			that.changeSong(newSong);
+			that.fadeIn(fadeSpeed, function() {
+				if(typeof(callback) == 'function') callback();
+			});
+		});
+	}
+
+};
+music.initialize();
 
 
 /*------------------- View/Page Class Definitions -------------------*/
@@ -33,6 +152,19 @@ var PageView = Backbone.View.extend({
 		this.renderPageTemplate(); //Render page template
 
 		this.render(); //Call child function for page-specific rendering
+
+		if(this.options.music){
+			if(music.isPaused()) {
+				music.changeSong(this.options.music)
+					.setVolume(0)
+					.goToStart()
+					.play()
+					.fadeIn(2000);
+			}
+			else {
+				music.changeSongSmooth(this.options.music);
+			}
+		}
 	},
 
 	renderPageTemplate: function(templateIDString) {
@@ -116,8 +248,8 @@ var ChapterPageView = PageView.extend({
 
 	playButtonClicked: function() {
 		var that = this;
-		// $('.chapter-title').velocity('fadeOut', { duration: fadeSpeed, complete: function() {
-			$('.chapter-title').fadeOut(fadeSpeed, function() {
+		// $('.chapter-title').velocity('fadeOut', { duration: globalOptions.fadeSpeed, complete: function() {
+			$('.chapter-title').fadeOut(globalOptions.fadeSpeed, function() {
 				that.videoPlay();
 			});
 		// }});
@@ -146,8 +278,8 @@ var ChapterPageView = PageView.extend({
 		this.video = Popcorn(this.videoTag);
 		this.watching = true; //If true, the video is being watched, so when the tangent box is opened and closed, it will pause and play the video in the background
 
-		this.video.mute(); //Mutes the video while development is underway
-		this.video.controls(true);
+		// this.video.mute(); //Mutes the video while development is underway
+		// this.video.controls(true);
 
 		//Video events. When adding new events, add the event removal line to the unload method
 		this.videoTag.addEventListener('playing', this.videoPlayEvent, false );
@@ -222,7 +354,7 @@ var ChapterPageView = PageView.extend({
 		var that = this;
 		this.video.pause();
 		this.watching = false;
-		this.$endVideo.delay(1000).fadeIn(500, function() {
+		this.$endVideo.delay(1000).fadeIn(globalOptions.fadeSpeed, function() {
 			that.video.pause();
 		});
 	},
@@ -231,7 +363,7 @@ var ChapterPageView = PageView.extend({
 		this.watching = true;
 		this.video.currentTime(0);
 		this.video.play();
-		this.$endVideo.delay(100).fadeOut(500);
+		this.$endVideo.delay(100).fadeOut(globalOptions.fadeSpeed);
 	},
 
 
@@ -249,12 +381,12 @@ var ChapterPageView = PageView.extend({
 		var template = _.template($('#template-tangent-popup-content').html());
 		this.$tangentPopup.find('.tangent-popup-content').html(template(tangent));
 
-		this.$tangentPopup.fadeIn(500);
+		this.$tangentPopup.fadeIn(globalOptions.fadeSpeed);
 	},
 
 	hideTangentBox: function() {
 		var that = this;
-		this.$tangentPopup.fadeOut(500, function() {
+		this.$tangentPopup.fadeOut(globalOptions.fadeSpeed, function() {
 			if(that.watching) that.video.play();
 		});
 	},
@@ -331,7 +463,9 @@ var TangentButtonView = Backbone.View.extend({
 var PageTitle = PageView.extend({
 
 	options: {
-		pageTemplate: 'template-title'
+		pageTemplate: 'template-title',
+		// music: 'Hogan_Grip_-_04_-_Interlude_-_Reading_The_Greens'
+		music: 'Chris_Zabriskie_-_08_-_Cylinder_Eight'
 	},
 
 	events: {
@@ -382,6 +516,8 @@ var PageChapter0 = ChapterPageView.extend({
 
 	options: {
 		pageTemplate: 'template-prologue',
+		music: 'Chris_Zabriskie_-_06_-_Cylinder_Six',
+		music: 'Atomic Sight',
 		nextPage: 'birth'
 	},
 
@@ -511,19 +647,19 @@ var Router = Backbone.Router.extend({
 	execute: function(callback, args) {
 		var that = this;
 
-		$page.fadeOut(fadeSpeed, function() {
-		// $page.velocity('fadeOut', { duration: fadeSpeed, complete: function() {
+		globalOptions.$page.fadeOut(globalOptions.fadeSpeed, function() {
+		// globalOptions.$page.velocity('fadeOut', { duration: globalOptions.fadeSpeed, complete: function() {
 
 			if(that.currentPage) {
 				that.currentPage.remove();
 			}
 
-			$page.html(''); //Clears all page content
+			globalOptions.$page.html(''); //Clears all page content
 
 			if (callback) callback.apply(that, args); //Applies the default behaviour
 
-			$page.fadeIn(fadeSpeed, function() {
-			// $page.velocity('fadeIn', { duration: fadeSpeed, complete: function() {
+			globalOptions.$page.fadeIn(globalOptions.fadeSpeed, function() {
+			// globalOptions.$page.velocity('fadeIn', { duration: globalOptions.fadeSpeed, complete: function() {
 				if(that.currentPage) that.currentPage.pageReady(); //Calls the currently visible view once it has faded in
 			});
 		});
