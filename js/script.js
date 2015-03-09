@@ -76,6 +76,10 @@ var ChapterPageView = PageView.extend({
 			that.replayButtonClicked();
 		};
 
+		this.events['click button.next'] = function() {
+			that.nextButtonClicked();
+		};
+
 		this.events['click .tangent-items li'] = function(e) {
 			that.tangentButtonClicked(e);
 		};
@@ -253,6 +257,11 @@ var ChapterPageView = PageView.extend({
 		this.$tangentPopup.fadeOut(500, function() {
 			if(that.watching) that.video.play();
 		});
+	},
+
+
+	nextButtonClicked: function() {
+		router.changePage(this.options.nextPage);
 	}
 
 });
@@ -372,7 +381,8 @@ var PageTitle = PageView.extend({
 var PageChapter0 = ChapterPageView.extend({
 
 	options: {
-		pageTemplate: 'template-prologue'
+		pageTemplate: 'template-prologue',
+		nextPage: 'birth'
 	},
 
 	tangents: [
