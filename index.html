@@ -86,6 +86,111 @@
 		</script>
 
 
+		<script type="text/template" id="template-birth">
+			<div class="page page-birth">
+				<div class="chapter-title full-screen">
+					<div class="centre">
+						<h2 class="chapter">- Chapter 1 -</h2>
+						<h1 class="title">Birth</h1>
+						<button class="play circle">&#9656;</button>
+					</div>
+				</div>
+				<div class="under-title full-screen">
+					<div class="centre">
+
+						<div class="video-container">
+							<video src="video/FireSmoke.mp4" class="main-video">
+								Your browser doesn't support embedded videos,
+								but you can still<a href="video/FireSmoke.mp4">download it</a>.
+							</video>
+						</div>
+					</div>
+
+					<div class="subtitles" id="subtitles"></div>
+					
+					<div class="tangents tangent-items"></div>
+				</div>
+				<div class="end-video full-screen">
+					<div class="centre">
+						<nav>
+							<button class="replay circle" title="Replay">&#8635;</button>
+							<button class="next circle" title="Continue">&rarr;</button>
+						</nav>
+						<div class="end-tangents">
+							<h3>More info on</h3>
+							<ul class="tangent-items"></ul>
+						</div>
+					</div>
+				</div>
+				<div class="tangent-popup full-screen">
+					<div class="cover full-screen close-tangent-popup"></div>
+					<div class="box centre">
+						<button class="close-tangent-popup close-small">&#10005;</button>
+						<div class="tangent-popup-content"></div>
+						<button class="close-tangent-popup close-large">Close</button>
+					</div>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/template" id="template-journey">
+			<div class="page page-journey">
+				<div class="chapter-title full-screen">
+					<div class="centre">
+						<h2 class="chapter">- Chapter 2 -</h2>
+						<h1 class="title">Journey</h1>
+						<button class="play circle">&#9656;</button>
+					</div>
+				</div>
+				<div class="under-title full-screen">
+					<div class="centre">
+
+						<div class="video-container">
+							<video controls src="video/FireSmoke.mp4" class="main-video">
+								Your browser doesn't support embedded videos,
+								but you can still<a href="video/FireSmoke.mp4">download it</a>.
+							</video>
+						</div>
+					</div>
+
+					<div class="subtitles" id="subtitles"></div>
+					
+					<div class="tangents tangent-items"></div>
+				</div>
+				<div class="end-video full-screen">
+					<div class="centre journey-box">
+						<div class="background"></div>
+						<div class="container">
+							<div class="space">
+								<div class="background"></div>
+								<div class="padding">
+									<div class="body sun"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+									<div class="body mercury"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+									<div class="body venus"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+									<div class="body earth"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+									<div class="body moon"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+								</div>
+							</div>
+						</div>
+						<div class="controls">Controls</div>
+					</div>
+					<nav>
+						<button class="replay circle" title="Replay">&#8635;</button>
+						<button class="next circle" title="Continue">&rarr;</button>
+					</nav>
+				</div>
+				<div class="tangent-popup full-screen">
+					<div class="cover full-screen close-tangent-popup"></div>
+					<div class="box centre">
+						<button class="close-tangent-popup close-small">&#10005;</button>
+						<div class="tangent-popup-content"></div>
+						<button class="close-tangent-popup close-large">Close</button>
+					</div>
+				</div>
+			</div>
+		</script>
+
+
 		<!-- Tangent Button -->
 		<script type="text/template" id="template-tangent">
 			<img src="images/icon-<%- icon %>.png" alt="<%- moreInfoOn %>"><span class="text" style="width: 0px;">More info on <span class="topic"><%- moreInfoOn %></span></span>

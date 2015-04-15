@@ -153,6 +153,7 @@ var PageView = Backbone.View.extend({
 
 		this.render(); //Call child function for page-specific rendering
 
+		/*
 		if(this.options.music){
 			if(music.isPaused()) {
 				music.changeSong(this.options.music)
@@ -165,6 +166,8 @@ var PageView = Backbone.View.extend({
 				music.changeSongSmooth(this.options.music);
 			}
 		}
+		*/
+		console.info('Music disabled while development is in progress');
 	},
 
 	renderPageTemplate: function(templateIDString) {
@@ -512,11 +515,10 @@ var PageTitle = PageView.extend({
 });
 
 
-var PageChapter0 = ChapterPageView.extend({
+var PagePrologue = ChapterPageView.extend({
 
 	options: {
 		pageTemplate: 'template-prologue',
-		music: 'Chris_Zabriskie_-_06_-_Cylinder_Six',
 		music: 'Atomic Sight',
 		nextPage: 'birth'
 	},
@@ -605,6 +607,78 @@ var PageChapter0 = ChapterPageView.extend({
 });
 
 
+var PageBirth = ChapterPageView.extend({
+
+	options: {
+		pageTemplate: 'template-birth',
+		music: 'Chris_Zabriskie_-_02_-_Cylinder_Two',
+		nextPage: 'journey'
+	},
+
+	events: {
+	},
+
+	render: function() {
+	}
+
+});
+
+
+var PageJourney = ChapterPageView.extend({
+
+	options: {
+		pageTemplate: 'template-journey',
+		music: 'Chris_Zabriskie_-_03_-_Cylinder_Three',
+		nextPage: 'destination'
+	},
+
+	events: {
+	},
+
+	render: function() {
+	},
+
+	pageReady: function() {
+		ChapterPageView.prototype.pageReady.call(this);
+	},
+
+});
+
+
+var PageDestination = ChapterPageView.extend({
+
+	options: {
+		pageTemplate: 'template-destination',
+		music: 'Chris_Zabriskie_-_06_-_Cylinder_Six',
+		nextPage: 'end'
+	},
+
+	events: {
+	},
+
+	render: function() {
+	}
+
+});
+
+
+var PageEnd = ChapterPageView.extend({
+
+	options: {
+		pageTemplate: 'template-end',
+		music: 'Chris_Zabriskie_-_01_-_The_Temperature_of_the_Air_on_the_Bow_of_the_Kaleetan',
+		nextPage: ''
+	},
+
+	events: {
+	},
+
+	render: function() {
+	}
+
+});
+
+
 /*------------------- Routes -------------------*/
 
 /*
@@ -614,9 +688,12 @@ This page object instance's superRender method is then called, which prints its 
 */
 
 var globalRoutes = [
-	//Name,  slug/link/route,  view
+	//Name/ID,  slug/link/route,  view
 	['Home', /$/, PageTitle],
-	['WhatIsAPhoton', 'what-is-a-photon', PageChapter0]
+	['WhatIsAPhoton', 'what-is-a-photon', PagePrologue],
+	['Birth', 'birth', PageBirth],
+	['Journey', 'journey', PageJourney],
+	['Destination', 'destination', PageDestination]
 ];
 
 

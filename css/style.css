@@ -603,3 +603,109 @@ video.main-video {
 	padding: 5px;
 	background-color: rgba(255, 255, 255, 0.16);
 }
+
+/*------------------- Journey Page -------------------*/
+
+.journey-box {
+	overflow: hidden;
+	height: 64%;
+	background-color: #05070a;
+}
+
+.journey-box .background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url('../Images/stardust.png') center center;
+	opacity: 0.05;
+}
+
+.journey-box .controls {
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.journey-box .container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	overflow-y: hidden; 
+	overflow-x: scroll; 
+}
+
+.journey-box .pillar {
+	display: block;
+	visibility: hidden;
+	width: 100%;
+	height: auto;
+}
+
+.journey-box .space {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.journey-box .space .background {
+	opacity: 0.5;
+}
+
+.journey-box .padding {
+	position: relative;
+	width: calc(100% - 100px);
+	top: 50%;
+	margin: 0 auto;
+	-webkit-transform: translateY(-50%);   -ms-transform: translateY(-50%);   
+	transform: translateY(-50%);
+}
+
+.journey-box .body {
+	position: absolute;
+	top: 50%;
+	width: 2%;
+	border-radius: 50%;
+	background-color: #F00;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	transition: left 1s;
+}
+
+.journey-box.not-to-scale .body {
+	left: 10%;
+}
+
+.journey-box .sun {
+	left: 0;
+	width: 0.930213904%;
+}
+
+.journey-box .mercury {
+	left: 38.70989305%;
+	width: 0.003262032%;
+}
+
+.journey-box .venus {
+	left: 72.32620321%;
+	width: 0.008090909%;
+}
+
+.journey-box .earth {
+	left: 100%;
+	width: 0.00851738%;
+}
+
+.journey-box .moon {
+	left: 99.74304813%;
+	width: 0.002272727%;
+}
