@@ -115,6 +115,14 @@ li {
 	margin-bottom: 0.15em;
 }
 
+strong, b {
+	font-weight: bold;
+}
+
+em {
+	font-style: italic;
+}
+
 /*------------------- Global -------------------*/
 
 noscript {
@@ -375,6 +383,7 @@ video.main-video {
 	font-size: 2em;
 	color: #888;
 	text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+	pointer-events: none;
 }
 
 
