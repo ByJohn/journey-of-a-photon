@@ -5,6 +5,7 @@
 	<title>The Journey of a Photon</title>
 
 	<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+	<link href='http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -172,7 +173,20 @@
 								</div>
 							</div>
 						</div>
-						<div class="controls">Controls</div>
+						<div class="controls cf">
+							<button class="journey-play">
+								<i class="fa fa-pause" title="Pause"></i>
+								<i class="fa fa-play" title="Play"></i>
+							</button>
+							<input type="range" name="time-slider" id="time-slider" class="time-slider">
+							<div class="zoom">
+								Zoom:
+								<button class="zoom-in">+</button>
+								<button class="zoom-out">-</button>
+								<div class="zoom-value">100%</div>
+							</div>
+							<div class="time-value">0:00</div>
+						</div>
 					</div>
 					<nav>
 						<button class="replay circle" title="Replay">&#8635;</button>
