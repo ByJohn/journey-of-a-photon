@@ -165,11 +165,42 @@
 							<div class="space">
 								<div class="background"></div>
 								<div class="padding">
-									<div class="body sun"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
-									<div class="body mercury"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
-									<div class="body venus"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
-									<div class="body earth"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
-									<div class="body moon"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+									<div class="body light"><img src="images/spacer.gif" alt="Pillar" class="pillar" /></div>
+									<div class="body sun">
+										<img src="images/spacer.gif" alt="Pillar" class="pillar" />
+										<div class="label">
+											<div class="text">Sun</div>
+											<div class="arrow">&darr;</div>
+										</div>
+									</div>
+									<div class="body mercury">
+										<img src="images/spacer.gif" alt="Pillar" class="pillar" />
+										<div class="label">
+											<div class="text">Mercury</div>
+											<div class="arrow">&darr;</div>
+										</div>
+									</div>
+									<div class="body venus">
+										<img src="images/spacer.gif" alt="Pillar" class="pillar" />
+										<div class="label">
+											<div class="text">Venus</div>
+											<div class="arrow">&darr;</div>
+										</div>
+									</div>
+									<div class="body moon">
+										<img src="images/spacer.gif" alt="Pillar" class="pillar" />
+										<div class="label">
+											<div class="text">Moon</div>
+											<div class="arrow">&darr;</div>
+										</div>
+									</div>
+									<div class="body earth">
+										<img src="images/spacer.gif" alt="Pillar" class="pillar" />
+										<div class="label">
+											<div class="text">Earth</div>
+											<div class="arrow">&darr;</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -178,7 +209,7 @@
 								<i class="fa fa-pause" title="Pause"></i>
 								<i class="fa fa-play" title="Play"></i>
 							</button>
-							<input type="range" name="time-slider" id="time-slider" class="time-slider">
+							<input type="range" name="time-slider" id="time-slider" class="time-slider" min="0" max="1000" step="1" />
 							<div class="zoom">
 								Zoom:
 								<button class="zoom-in">+</button>

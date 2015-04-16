@@ -645,12 +645,12 @@ video.main-video {
 	margin-right: 1%;
 }
 
-.journey-box .controls .journey-play .fa-play, .journey-box.paused .controls .journey-play .fa-paused {
-	display: none;
+.journey-box .controls .journey-play .fa-play, .journey-box.playing .controls .journey-play .fa-pause {
+	display: block;
 }
 
-.journey-box.paused .controls .journey-play .fa-play {
-	display: block;
+.journey-box.playing .controls .journey-play .fa-play, .journey-box .controls .journey-play .fa-pause {
+	display: none;
 }
 
 .journey-box .controls .time-slider {
@@ -729,6 +729,7 @@ video.main-video {
 
 .journey-box .body {
 	position: absolute;
+	z-index: 2;
 	top: 50%;
 	width: 2%;
 	border-radius: 50%;
@@ -745,24 +746,91 @@ video.main-video {
 .journey-box .sun {
 	left: 0;
 	width: 0.930213904%;
+	background-color: #FCF4CA;
+	color: #FCF4CA;
+}
+
+.journey-box .light {
+	z-index: 1;
+	left: 0;
+	width: 2%;
+	opacity: 0.9;
+	overflow: hidden;
+	background-color: #fff;
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.3) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(20%,rgba(255,255,255,0.05)), color-stop(100%,rgba(255,255,255,0.3)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
+	background: -o-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
+	background: radial-gradient(ellipse at center,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=1 );
+	-webkit-transition: all 1000ms linear;
+	transition: all 1000ms linear;
+}
+
+.journey-box.dragging-slider .light {
+	-webkit-transition: none;
+	transition: none;
 }
 
 .journey-box .mercury {
 	left: 38.70989305%;
 	width: 0.003262032%;
+	background-color: #D5732C;
+	color: #D5732C;
 }
 
 .journey-box .venus {
 	left: 72.32620321%;
 	width: 0.008090909%;
+	background-color: #C32500;
+	color: #C32500;
 }
 
 .journey-box .earth {
 	left: 100%;
 	width: 0.00851738%;
+	background-color: #0B61FF;
+	color: #0B61FF;
 }
 
 .journey-box .moon {
 	left: 99.74304813%;
 	width: 0.002272727%;
+	background-color: #999;
+	color: #999;
+}
+
+.journey-box .body .label {
+	position: absolute;
+	left: 50%;
+	bottom: 100%;
+	opacity: 0.6;
+	margin-bottom: 10px;
+	font-size: 0.9em;
+	color: #E2E2E2;
+	-webkit-transform: translateX(-50%);   
+	-ms-transform: translateX(-50%);      
+	transform: translateX(-50%);
+	-webkit-transition: all 500ms;
+	transition: all 500ms;
+}
+
+.journey-box .body .label .text {
+
+}
+
+.journey-box .body .label .arrow {
+	font-size: 1.2em;
+	opacity: 0.7;
+	line-height: 1;
+}
+
+.journey-box[data-zoom-level="0"] .moon .label,
+.journey-box[data-zoom-level="1"] .moon .label,
+.journey-box[data-zoom-level="2"] .moon .label,
+.journey-box[data-zoom-level="3"] .moon .label,
+.journey-box[data-zoom-level="4"] .moon .label {
+	opacity: 0;
+	pointer-events: none;
 }
