@@ -633,6 +633,174 @@ var PageJourney = ChapterPageView.extend({
 	},
 
 	events: {
+		'click .zoom-in' : 'zoomInClicked',
+		'click .zoom-out' : 'zoomOutClicked',
+		'click .journey-play' : 'journeyPlayClicked',
+		'mousedown .time-slider' : 'timeSliderMouseDown',
+		'mouseup .time-slider' : 'timeSliderMouseUp',
+		'mousemove' : 'mouseMove',
+	},
+
+	space: {
+
+		time: 0,
+		timeGap: 500,
+		maxTime: 500000, //It takes light, on average, 8 minutes 20 seconds (500 seconds) to reach earth
+		paused: true,
+
+		draggingSlider: false,
+
+		currentZoomLevel: 0,
+		zoomLevels: [
+			100,
+			500,
+			1000,
+			1500,
+			2000,
+			2500,
+			3000,
+			4000,
+			5000,
+			6000,
+			7000,
+			8000,
+			9000,
+			10000,
+			15000,
+			20000,
+			30000,
+			40000,
+			50000,
+			100000
+		],
+
+		reset: function() {
+			var that = this;
+
+			//Gets DOM elements
+			this.$journeyBox = $('.journey-box');
+			this.$space = $('.journey-box .space');
+			this.$light = $('.journey-box .body.light');
+			this.$sun = $('.journey-box .body.sun');
+			this.$play = $('.journey-box .journey-play');
+			this.$timeSlider = $('.journey-box .time-slider');
+			this.$zoomValue = $('.journey-box .zoom-value');
+			this.$timeValue = $('.journey-box .time-value');
+
+			//Resets values
+			this.setZoomLevel(0);
+			this.time = 0;
+			this.removeTimer();
+
+			this.timer = setInterval(function() {
+				that.tick();
+			}, that.timeGap);
+
+			this.play();
+		},
+
+
+		getZoomLevel: function() {
+			return this.currentZoomLevel;
+		},
+
+		setZoomLevel: function(level) {
+			level = clamp(level, 0, this.zoomLevels.length - 1);
+
+			this.$space.css('width', this.zoomLevels[level] + '%');
+
+			this.currentZoomLevel = level;
+
+			this.$zoomValue.html(this.zoomLevels[this.getZoomLevel()] + '%');
+
+			this.$journeyBox.attr('data-zoom-level', this.getZoomLevel());
+		},
+
+		zoomIn: function() {
+			this.setZoomLevel(this.getZoomLevel() + 1);
+		},
+
+		zoomOut: function() {
+			this.setZoomLevel(this.getZoomLevel() - 1);
+		},
+
+
+		removeTimer: function() {
+			clearInterval(this.timer);
+			delete this.timer;
+		},
+
+		play: function() {
+			this.paused = false;
+			this.$journeyBox.addClass('playing');
+		},
+
+		pause: function() {
+			this.paused = true;
+			this.$journeyBox.removeClass('playing');
+		},
+
+		togglePlay: function() {
+			if(this.paused) this.play();
+			else this.pause();
+		},
+
+		tick: function() {
+			if(!this.paused && this.time < this.maxTime && !this.draggingSlider) {
+				this.time += this.timeGap;
+				this.updateSlider();
+				this.updateTimeView();
+				this.updateLight();
+			}
+		},
+
+		updateSlider: function() {
+			this.$timeSlider.val(Math.round(this.time / 1000) * 2);
+		},
+
+		updateTimeView: function() {
+			var timeInSeconds = Math.round(this.time / 1000);
+			var minutes = Math.floor(timeInSeconds / 60);
+			var seconds = timeInSeconds - minutes * 60;
+
+			this.$timeValue.html(('0'  + minutes).slice(-2)+':'+('0' + seconds).slice(-2));
+		},
+
+		updateLight: function() {
+			this.$light.css('width', map(
+				this.time,
+				0,
+				this.maxTime,
+				0.930213904,
+				200.1 //The percentage width at which it reaches earth
+			) + '%');
+		},
+
+
+		timeSliderMouseDown: function() {
+			this.draggingSlider = true;
+			this.$journeyBox.addClass('dragging-slider');
+		},
+
+		timeSliderMouseUp: function() {
+			this.draggingSlider = false;
+			this.$journeyBox.removeClass('dragging-slider');
+		},
+
+		mouseMove: function() {
+			if(this.draggingSlider) {
+				this.time = (parseInt(this.$timeSlider.val(), 10) / 2) * 1000;
+				this.updateTimeView();
+				this.updateLight();
+			}
+		}
+
+	},
+
+	initialize: function() {
+		ChapterPageView.prototype.initialize.call(this);
+
+		this.space.parentView = this;
 	},
 
 	render: function() {
@@ -641,6 +809,44 @@ var PageJourney = ChapterPageView.extend({
 	pageReady: function() {
 		ChapterPageView.prototype.pageReady.call(this);
 	},
+
+	videoEndEvent: function(e) {
+		ChapterPageView.prototype.videoEndEvent.call(this);
+
+		this.space.reset();
+	},
+
+	unload: function() {
+		ChapterPageView.prototype.unload.call(this);
+
+		this.space.removeTimer();
+	},
+
+
+	zoomInClicked: function(e) {
+		this.space.zoomIn();
+	},
+
+	zoomOutClicked: function(e) {
+		this.space.zoomOut();
+	},
+
+
+	journeyPlayClicked: function(e) {
+		this.space.togglePlay();
+	},
+
+	timeSliderMouseDown: function(e) {
+		this.space.timeSliderMouseDown();
+	},
+
+	timeSliderMouseUp: function(e) {
+		this.space.timeSliderMouseUp();
+	},
+
+	mouseMove: function(e) {
+		this.space.mouseMove();
+	}
 
 });
 
@@ -751,3 +957,16 @@ var Router = Backbone.Router.extend({
 
 var router = new Router();
 Backbone.history.start();
+
+
+/*------------------- Utility Functions -------------------*/
+
+
+function clamp(num, min, max) {
+	return Math.min(Math.max(num, min), max);
+}
+
+//Based on http://stackoverflow.com/a/23202637/528423
+function map(value, in_min , in_max , out_min , out_max ) {
+	return ( value - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;
+}
