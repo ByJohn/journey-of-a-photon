@@ -643,7 +643,11 @@ var PageJourney = ChapterPageView.extend({
 		'click .journey-play' : 'journeyPlayClicked',
 		'mousedown .time-slider' : 'timeSliderMouseDown',
 		'mouseup .time-slider' : 'timeSliderMouseUp',
+		'mousedown .journey-box .space' : 'spaceMouseDown',
+		'mouseup .journey-box .space' : 'spaceMouseUp',
 		'mousemove' : 'mouseMove',
+		'mousewheel .space': 'mouseScroll',
+		'DOMMouseScroll .space': 'mouseScroll'
 	},
 
 	space: {
@@ -654,6 +658,12 @@ var PageJourney = ChapterPageView.extend({
 		paused: true,
 
 		draggingSlider: false,
+
+		draggingContainer: {
+			mouseDown: false,
+			mouseX: null,
+			scrollLeft: null
+		},
 
 		currentZoomLevel: 0,
 		zoomLevels: [
@@ -684,13 +694,18 @@ var PageJourney = ChapterPageView.extend({
 
 			//Gets DOM elements
 			this.$journeyBox = $('.journey-box');
+			this.$container = $('.journey-box .container');
 			this.$space = $('.journey-box .space');
+			this.$spacePadding = $('.journey-box .space .padding');
 			this.$light = $('.journey-box .body.light');
 			this.$sun = $('.journey-box .body.sun');
 			this.$play = $('.journey-box .journey-play');
 			this.$timeSlider = $('.journey-box .time-slider');
 			this.$zoomValue = $('.journey-box .zoom-value');
 			this.$timeValue = $('.journey-box .time-value');
+			this.$distanceValue = $('.journey-box .ruler .number.km');
+			this.$lightDistanceValue = $('.journey-box .ruler .number.light-value');
+			this.$lightDistanceMeasure = $('.journey-box .ruler .measure.light-measure');
 
 			//Resets values
 			this.setZoomLevel(0);
@@ -709,24 +724,78 @@ var PageJourney = ChapterPageView.extend({
 			return this.currentZoomLevel;
 		},
 
-		setZoomLevel: function(level) {
+		setZoomLevel: function(level, position) {
+			position = typeof position !== 'undefined' ? position : ({
+				mouseX: this.$container.outerWidth() / 2,
+				spaceX: this.pixelsToSpaceUnits(this.$journeyBox.outerWidth() / 2)
+			});
+
+			var previousLevel = this.getZoomLevel();
+			var currentXPos = position.spaceX;
+
 			level = clamp(level, 0, this.zoomLevels.length - 1);
 
 			this.$space.css('width', this.zoomLevels[level] + '%');
 
 			this.currentZoomLevel = level;
 
+
 			this.$zoomValue.html(this.zoomLevels[this.getZoomLevel()] + '%');
+			this.$distanceValue.html( numberWithCommas(parseInt(149500000 / (this.zoomLevels[this.getZoomLevel()] / 100))) );
+
+			var lightDistanceValue = 8.3 / (this.zoomLevels[this.getZoomLevel()] / 100),
+				lightDistanceMeasure = 'Light minutes';
+
+			if(lightDistanceValue < 1) {
+				lightDistanceValue = Math.round((lightDistanceValue * 60) * 10) / 10;
+				lightDistanceMeasure = 'Light seconds';
+				if(lightDistanceValue == 1) lightDistanceMeasure = lightDistanceMeasure.substring(0, lightDistanceMeasure.length - 1); //Remove last ("s") character
+			}
+
+			this.$lightDistanceValue.html( Math.round(lightDistanceValue * 10) / 10 );
+			this.$lightDistanceMeasure.html( lightDistanceMeasure );
+
 
 			this.$journeyBox.attr('data-zoom-level', this.getZoomLevel());
+
+			if(this.getZoomLevel() > 0) this.$journeyBox.addClass('zoomed-in');
+			else this.$journeyBox.removeClass('zoomed-in');
+
+			var levelChange = (this.zoomLevels[this.getZoomLevel()] / this.zoomLevels[previousLevel]);
+			//this.scrollTo(this.$space.find('.venus').position().left + (this.$space.find('.venus').outerWidth() / 2) );
+			
+			this.scrollTo( ( currentXPos + (0) ) * levelChange - (this.getPaddingLeft() * 1), position.mouseX );
 		},
 
-		zoomIn: function() {
-			this.setZoomLevel(this.getZoomLevel() + 1);
+		zoomIn: function(position) {
+			this.setZoomLevel(this.getZoomLevel() + 1, position);
 		},
 
-		zoomOut: function() {
-			this.setZoomLevel(this.getZoomLevel() - 1);
+		zoomOut: function(position) {
+			this.setZoomLevel(this.getZoomLevel() - 1, position);
+		},
+
+
+		//Returns the generated left value of the space padding layer (auto-generated value because margin is left to "0 auto")
+		getPaddingLeft: function() {
+			return parseInt(this.$spacePadding.css('marginLeft').replace('px', ''));	
+		},
+
+		pixelsToSpaceUnits: function(x) {
+			return x + this.$container.scrollLeft();
+		},
+
+		//Scrolls to a position so that it is in the centre of the view
+		scrollTo: function(xPos, focusX) {
+			focusX = typeof focusX !== 'undefined' ? focusX : ( this.$container.outerWidth() / 2 );
+
+			var newScrollLeft = xPos - focusX + this.getPaddingLeft();
+
+			// console.log('xPos:', xPos, 'newScrollLeft:', newScrollLeft);
+
+			this.$container.stop(true).animate({
+				scrollLeft: newScrollLeft
+			}, 0);
 		},
 
 
@@ -782,6 +851,12 @@ var PageJourney = ChapterPageView.extend({
 		},
 
 
+		setTimeFromSlider: function() {
+			this.time = (parseInt(this.$timeSlider.val(), 10) / 2) * 1000;
+			this.updateTimeView();
+			this.updateLight();
+		},
+
 		timeSliderMouseDown: function() {
 			this.draggingSlider = true;
 			this.$journeyBox.addClass('dragging-slider');
@@ -793,16 +868,46 @@ var PageJourney = ChapterPageView.extend({
 			this.setTimeFromSlider();
 		},
 
-		mouseMove: function() {
+		spaceMouseDown: function(e) {
+			this.draggingContainer.mouseDown = true;
+			this.$journeyBox.addClass('dragging-space');
+			this.draggingContainer.mouseX = e.clientX;
+			this.draggingContainer.scrollLeft = this.$container.scrollLeft();
+		},
+
+		spaceMouseUp: function(e) {
+			this.draggingContainer.mouseDown = false;
+			this.$journeyBox.removeClass('dragging-space');
+		},
+
+		mouseMove: function(e) {
 			if(this.draggingSlider) {
 				this.setTimeFromSlider();
 			}
+			if(this.draggingContainer.mouseDown){
+				this.$container.scrollLeft(this.draggingContainer.scrollLeft + (this.draggingContainer.mouseX - e.clientX));
+				// console.log(this.$container.scrollLeft(), this.draggingContainer.mouseX, e.clientX);
+			}
+			// console.log('MouseX:', e.originalEvent.clientX, 'paddingX:', this.pixelsToSpaceUnits(e.originalEvent.clientX));
 		},
 
-		setTimeFromSlider: function() {
-			this.time = (parseInt(this.$timeSlider.val(), 10) / 2) * 1000;
-			this.updateTimeView();
-			this.updateLight();
+
+		mouseScroll: function(e) {
+			var position = {
+				mouseX: e.clientX || e.originalEvent.clientX,
+				spaceX: this.pixelsToSpaceUnits(e.clientX || e.originalEvent.clientX),
+			};
+
+			if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) {
+				//Out
+				this.zoomOut(position);
+				// console.log('position', e.clientX, 'scrollLeft', this.$container.scrollLeft());
+			} else {
+				//In
+				//this.scrollTo(this.$space.find('.venus').position().left + (this.$space.find('.venus').outerWidth() / 2) );
+				this.zoomIn(position);
+				// this.scrollTo(this.pixelsToSpaceUnits(position));
+			}
 		}
 
 	},
@@ -854,8 +959,20 @@ var PageJourney = ChapterPageView.extend({
 		this.space.timeSliderMouseUp();
 	},
 
+	spaceMouseDown: function(e) {
+		this.space.spaceMouseDown(e);
+	},
+
+	spaceMouseUp: function(e) {
+		this.space.spaceMouseUp(e);
+	},
+
 	mouseMove: function(e) {
-		this.space.mouseMove();
+		this.space.mouseMove(e);
+	},
+
+	mouseScroll: function(e) {
+		this.space.mouseScroll(e);
 	}
 
 });
@@ -979,4 +1096,9 @@ function clamp(num, min, max) {
 //Based on http://stackoverflow.com/a/23202637/528423
 function map(value, in_min , in_max , out_min , out_max ) {
 	return ( value - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;
+}
+
+//Source: http://stackoverflow.com/a/2901298/528423
+function numberWithCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
