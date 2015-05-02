@@ -618,8 +618,10 @@ video.main-video {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: url('../Images/stardust.png') center center;
-	opacity: 0.05;
+	opacity: 0.25;
+	/* background: url('https://download.unsplash.com/photo-1421930535025-d2af27c14065') center center; */
+	background: url('../images/space-background.jpg') right center; /* Source: http://finda.photo/image/8133 */
+	background-size: cover;
 }
 
 
@@ -713,7 +715,9 @@ video.main-video {
 }
 
 .journey-box .space .background {
-	opacity: 0.2;
+	opacity: 0.1;
+	background-size: auto;
+	background: url('../Images/stardust.png') center center;
 }
 
 .journey-box .padding {
@@ -758,13 +762,13 @@ video.main-video {
 	opacity: 0.9;
 	overflow: hidden;
 	background-color: #fff;
-	background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.3) 100%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(20%,rgba(255,255,255,0.05)), color-stop(100%,rgba(255,255,255,0.3)));
-	background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
-	background: -o-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
-	background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
-	background: radial-gradient(ellipse at center,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=1 );
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.2) 20%, rgba(255,255,255,0) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(20%,rgba(255,255,255,0.2)), color-stop(100%,rgba(255,255,255,0)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.2) 20%,rgba(255,255,255,0) 100%);
+	background: -o-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.2) 20%,rgba(255,255,255,0) 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.2) 20%,rgba(255,255,255,0) 100%);
+	background: radial-gradient(ellipse at center,  rgba(255,255,255,0.2) 20%,rgba(255,255,255,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=1 );
 	-webkit-transition: all 500ms linear;
 	transition: all 500ms linear;
 }
