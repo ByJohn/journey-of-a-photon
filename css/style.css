@@ -607,7 +607,7 @@ video.main-video {
 /*------------------- Journey Page -------------------*/
 
 .journey-box {
-	overflow: hidden;
+	/* overflow: hidden; */
 	height: 64%;
 	background-color: #05070a;
 }
@@ -622,6 +622,16 @@ video.main-video {
 	/* background: url('https://download.unsplash.com/photo-1421930535025-d2af27c14065') center center; */
 	background: url('../images/space-background.jpg') right center; /* Source: http://finda.photo/image/8133 */
 	background-size: cover;
+}
+
+.journey-box .journey-bottom {
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	padding-top: 10px;
+	text-align: center;
+	opacity: 0.2;
+	font-size: 0.9em;
 }
 
 
