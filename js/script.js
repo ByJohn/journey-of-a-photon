@@ -776,8 +776,8 @@ var PageJourney = ChapterPageView.extend({
 				this.time,
 				0,
 				this.maxTime,
-				0.930213904,
-				200.1 //The percentage width at which it reaches earth
+				0.930213904, //The percentage width of the sun
+				200 //The percentage width at which it reaches earth
 			) + '%');
 		},
 
@@ -790,14 +790,19 @@ var PageJourney = ChapterPageView.extend({
 		timeSliderMouseUp: function() {
 			this.draggingSlider = false;
 			this.$journeyBox.removeClass('dragging-slider');
+			this.setTimeFromSlider();
 		},
 
 		mouseMove: function() {
 			if(this.draggingSlider) {
-				this.time = (parseInt(this.$timeSlider.val(), 10) / 2) * 1000;
-				this.updateTimeView();
-				this.updateLight();
+				this.setTimeFromSlider();
 			}
+		},
+
+		setTimeFromSlider: function() {
+			this.time = (parseInt(this.$timeSlider.val(), 10) / 2) * 1000;
+			this.updateTimeView();
+			this.updateLight();
 		}
 
 	},

@@ -765,8 +765,8 @@ video.main-video {
 	background: -ms-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
 	background: radial-gradient(ellipse at center,  rgba(255,255,255,0.05) 20%,rgba(255,255,255,0.3) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=1 );
-	-webkit-transition: all 1000ms linear;
-	transition: all 1000ms linear;
+	-webkit-transition: all 500ms linear;
+	transition: all 500ms linear;
 }
 
 .journey-box.dragging-slider .light {
