@@ -1,3 +1,8 @@
+/*
+* By John Evans
+* www.johnevans.co
+*/
+
 $(function() {
 	// < IE9
 	if(!Modernizr.csstransforms || !Modernizr.video) {
