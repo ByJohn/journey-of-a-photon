@@ -164,6 +164,7 @@ body {
 
 button.circle {
 	display: inline-block;
+	position: relative;
 	padding: 0.1em 0.36em 0.2em;
 	border: 1px solid #888888;
 	background-color: transparent;
@@ -554,6 +555,29 @@ video.main-video {
 
 }
 
+.end-video button.circle:after {
+	display: block;
+	position: absolute;
+	content: attr(title);
+	top: 100%;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+	padding-top: 0.5em;
+	font-size: 0.45em;
+	text-align: center;
+	font-weight: 400;
+	opacity: 0.45;
+	-webkit-transition: -webkit-transform 250ms;
+	transition: transform 250ms;
+}
+
+.end-video button.circle:hover:after {
+	-webkit-transform: translateX(-50%) translateY(-0.1em) scale(0.9);
+	transform: translateX(-50%) translateY(-0.1em) scale(0.9);
+}
+
 .end-video .replay {
 	margin-right: 1em;
 	padding: 0.3em;
@@ -615,6 +639,10 @@ video.main-video {
 
 /*------------------- Journey Page -------------------*/
 
+.page-journey .end-video nav {
+	margin-top: 2.3em;
+}
+
 .journey-box {
 	/* overflow: hidden; */
 	height: 64%;
@@ -646,33 +674,33 @@ video.main-video {
 
 
 .journey-box .ruler {
-    position: absolute;
+	position: absolute;
 
-    bottom: 30px;
-    left: 50px;
-    width: 100%;
-    width: calc(100% - 100px);
-    text-align: center;
-    border: 1px solid;
-    border-top: none;
-    font-size: 0.83em;
-    opacity: 0.25;
+	bottom: 30px;
+	left: 50px;
+	width: 100%;
+	width: calc(100% - 100px);
+	text-align: center;
+	border: 1px solid;
+	border-top: none;
+	font-size: 0.83em;
+	opacity: 0.25;
 }
 
 .journey-box .ruler .middle-line {
-    position: absolute;
+	position: absolute;
 
-    width: 1px;
-    height: 0.5em;
-    bottom: 0;
-    left: 50%;
-    background: #E2E2E2;
+	width: 1px;
+	height: 0.5em;
+	bottom: 0;
+	left: 50%;
+	background: #E2E2E2;
 }
 
 .journey-box .ruler .ruler-text {
-    position: relative;
+	position: relative;
 
-    bottom: 8px;
+	bottom: 8px;
 }
 
 .journey-box .ruler .number {
@@ -680,7 +708,7 @@ video.main-video {
 }
 
 .journey-box .ruler .measure {
-    font-size: 0.8em;
+	font-size: 0.8em;
 
 }
 
