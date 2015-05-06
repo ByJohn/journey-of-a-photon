@@ -134,6 +134,7 @@
 			</div>
 		</script>
 
+
 		<script type="text/template" id="template-journey">
 			<div class="page page-journey">
 				<div class="chapter-title full-screen">
@@ -313,6 +314,54 @@
 		</script>
 
 
+		<script type="text/template" id="template-destination">
+			<div class="page page-destination">
+				<div class="chapter-title full-screen">
+					<div class="centre">
+						<h2 class="chapter">- Chapter 3 -</h2>
+						<h1 class="title">Destination</h1>
+						<button class="play circle">&#9656;</button>
+					</div>
+				</div>
+				<div class="under-title full-screen">
+					<div class="centre">
+
+						<div class="video-container">
+							<video src="video/Chapter 3 - Destination.mp4" class="main-video">
+								Your browser doesn't support embedded videos,
+								but you can still<a href="video/Chapter 3 - Destination.mp4">download it</a>.
+							</video>
+						</div>
+					</div>
+
+					<div class="subtitles" id="subtitles"></div>
+					
+					<div class="tangents tangent-items"></div>
+				</div>
+				<div class="end-video full-screen">
+					<div class="centre">
+						<nav>
+							<button class="replay circle" title="Replay">&#8635;</button>
+							<button class="next circle" title="Finish">&rarr;</button>
+						</nav>
+						<div class="end-tangents">
+							<h3>More info on</h3>
+							<ul class="tangent-items"></ul>
+						</div>
+					</div>
+				</div>
+				<div class="tangent-popup full-screen">
+					<div class="cover full-screen close-tangent-popup"></div>
+					<div class="box centre">
+						<button class="close-tangent-popup close-small">&#10005;</button>
+						<div class="tangent-popup-content"></div>
+						<button class="close-tangent-popup close-large">Close</button>
+					</div>
+				</div>
+			</div>
+		</script>
+
+
 		<!-- Tangent Button -->
 		<script type="text/template" id="template-tangent">
 			<img src="images/icon-<%- icon %>.png" alt="<%- moreInfoOn %>"><span class="text" style="width: 0px;">More info on <span class="topic"><%- moreInfoOn %></span></span>
@@ -385,6 +434,67 @@
 			<p>Because the wavelengths involved in the electromagnetic spectrum are so broad, many units of measurement are used, from nanometres to kilometres.</p>
 			<img src="images/Frequency.gif" alt="Frequency" />
 			<p>Frequency is measured in hertz and is calculated by counting the amount of wave peaks to pass a point in one second.</p>
+		</script>
+
+
+		<script type="text/template" id="tangent-sun-power">
+			<ul>
+				<li>The core temperature is 15,000,000 &#176;C (45,000,032 &#176;F)</li>
+				<li>The surface temperature is 5426.85 &#176;C (9800.33 &#176;F)</li>
+				<li>Every second, it releases 4.26 million metric tons of mass in energy</li>
+			</ul>
+		</script>
+
+		<script type="text/template" id="tangent-visible-light">
+			<p>It may sound like an amazingly lucky coincidence that we happen to see the same frequencies that are most commonly produced by our sun.</p>
+			<p>But it is not luck, it is simply evolution. We have evolved to see what we call "visible light" because that is what has been available to Earth during the course of evolution.</p>
+		</script>
+
+
+		<script type="text/template" id="tangent-speed-of-light">
+			<p>The speed of light is a <em>slight misnomer</em>, as this speed is technically just the <strong>maximum speed the universe</strong> allows anything to travel. Light was simply the first thing we discovered that travelled that fast.</p>
+			<p>The speed of light is not set by light itself, it is set by the universe.</p>
+			<p>Nothing can go faster than 299,792,458 m/s in the universe, light is just one other thing that reaches that limit.</p>
+		</script>
+
+		<script type="text/template" id="tangent-c">
+			<p>"c" (lowercase) is the symbol that represents the speed of light.</p>
+			<p>No one is certain why this letter is used, but the two most accepted answers are:</p>
+			<ul>
+				<li>It stands for "constant"</li>
+				<li>It is from the Latin word "celeritas", meaning "speed"</li>
+			</ul>
+		</script>
+
+
+		<script type="text/template" id="tangent-ozone">
+			<p>Ozone is an oxygen molecule (O3) that exists in the upper atmosphere and absorbs dangerous electromagnetic frequencies from the sun, like ultraviolet light.</p>
+			<p>The diagram below shows what frequencies are absorbed and let through by the Earth's atmosphere:</p>
+			<a href="http://en.wikipedia.org/wiki/Atmosphere_of_Earth#/media/File:Atmospheric_electromagnetic_opacity.svg" target="_blank">
+				<img src="images/Atmospheric_electromagnetic_opacity.png" alt="Atmospheric Electromagnetic Opacity" class="align-centre white padding" />
+			</a>
+		</script>
+
+		<script type="text/template" id="tangent-blue-sky">
+			<p>The molecules in the sky slightly scatter all wavelengths of light from the sun (even the invisible ones). The scattered photons then have a higher chance of entering your eye.</p>
+			<p>The higher the frequency, the more a photon get scattered, so blue, purple and ultraviolet light gets scattered the most.</p>
+			<img src="images/scatter.png" alt="Frequency Scattering" class="align-centre padding" />
+			<p>The sky is not purple because humans happen to be more sensitive to blue light than purple light, so blue appears more prominent.</p>
+		</script>
+
+		<script type="text/template" id="tangent-sources">
+			<p>Made by <a href="http://www.johnevans.co" target="_blank">John Evans</a></p>
+
+			<h3>Icons</h3>
+			<ul>
+				<li><a href="https://www.iconfinder.com" target="_blank">Iconfinder</a></li>
+				<li><a href="http://www.flaticon.com/" target="_blank">Flaticon</a></li>
+			</ul>
+			<h3>Music</h3>
+			<ul>
+				<li><a href="http://chriszabriskie.com/" target="_blank">Chris Zabriskie</a></li>
+				<li><a href="http://freeplaymusic.com/volumedetail.aspx?volume=22180" target="_blank">Warren Chadwick, Freeplaymusic</a></li>
+			</ul>
 		</script>
 
 	</div>

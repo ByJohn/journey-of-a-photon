@@ -620,6 +620,52 @@ var PageBirth = ChapterPageView.extend({
 		nextPage: 'journey'
 	},
 
+	tangents: [
+		{
+			title: 'The Power of the Sun',
+			moreInfoOn: 'the power of the sun',
+			time: 32,
+			icon: 'sun-power',
+			templateID: 'tangent-sun-power'
+		},
+		{
+			title: 'Visible Light',
+			moreInfoOn: 'visible light',
+			time: 68,
+			icon: 'eye',
+			templateID: 'tangent-visible-light'
+		},
+	],
+
+	subtitles: [
+		[0.2, 4, 'The sun is a huge sphere of gas, mostly made up of hydrogen'],
+		[4, 8.5, 'Hydrogen also makes up 75% of the mass of the entire universe'],
+		[8.5, 11.1, 'the remaining quarter is filled mostly by helium'],
+		[11.5, 12.8, ' and then there\'s everything else'],
+		[13, 18, 'The sun\'s diameter is 1,391,600 km wide'],
+		[18, 20.6, 'about 109 times that of the Earth'],
+		[20.9, 24.2, 'It also weights 333,000 times as much'],
+		[24.8, 26.4, 'It is made up of three main layers'],
+		[26.4, 30, 'the core, the radiative zone and the convection zone'],
+		[30, 32.1, 'Its huge gravity pulls its mass inwards'],
+		[32.1, 35.6, 'creating a vast amount of pressure at its core'],
+		[35.6, 38.5, 'This immense pressure causes nuclear fusion to occur'],
+		[38.5, 41.4, 'which produces helium, heat and photons'],
+		[41.4, 44.9, 'The photons are usually of a high frequency, like gamma rays'],
+		[44.9, 46.6, 'as they make their way to the surface'],
+		[46.6, 50.5, 'However, they only get to move slightly before they are absorbed by an atom'],
+		[50.5, 55, 'and then re-emitted with slightly less energy, so their frequency is decreased'],
+		[55, 58.2, 'Although the photons are travelling at the speed of light between collisions'],
+		[58.2, 61.1, 'due to the sun\'s density, their journey to the surface can take'],
+		[61.1, 64.4, '10,000 to 100,000 years'],
+		[64.4, 67.9, 'As they reach the surface of the sun, their frequency, or wavelength'],
+		[67.9, 70.9, 'has decreased to now be within the visible light range'],
+		[70.9, 74.2, 'The sun also emits a decent amount of infra-red radiation'],
+		[74.2, 76.5, 'as well as other frequencies'],
+		[76.5, 78.5, 'Now set free into the vacuum of space'],
+		[78.5, 80, 'the next leg of their journey begins']
+	],
+
 	events: {
 	},
 
@@ -636,6 +682,35 @@ var PageJourney = ChapterPageView.extend({
 		music: 'Chris_Zabriskie_-_03_-_Cylinder_Three',
 		nextPage: 'destination'
 	},
+
+	tangents: [
+		{
+			title: 'The Speed of Light',
+			moreInfoOn: 'the speed of light',
+			time: 2,
+			icon: 'wave',
+			templateID: 'tangent-speed-of-light'
+		},
+		{
+			title: 'c',
+			moreInfoOn: 'c',
+			time: 4.2,
+			icon: 'c',
+			templateID: 'tangent-c'
+		},
+	],
+
+	subtitles: [
+		[0.5, 3.6, 'Like anything with no mass, photons travel at the speed of light'],
+		[3.6, 5, 'also called "c"'],
+		[5, 7.9, 'which is about 300 million meters per second'],
+		[7.9, 11.2, 'or 671 million miles per hour'],
+		[11.2, 12.5, 'At this incredible speed'],
+		[12.5, 15.9, 'a photon could travel around the Earth 7 times in 1 second'],
+		[15.9, 19.3, 'and is 200,000 times faster than a bullet'],
+		[19.3, 20.9, 'But on a galactic scale'],
+		[20.9, 23.5, 'this universal speed limit is rather slow']
+	],
 
 	events: {
 		'click .zoom-in' : 'zoomInClicked',
@@ -983,8 +1058,51 @@ var PageDestination = ChapterPageView.extend({
 	options: {
 		pageTemplate: 'template-destination',
 		music: 'Chris_Zabriskie_-_06_-_Cylinder_Six',
-		nextPage: 'end'
+		nextPage: ''
 	},
+
+	tangents: [
+		{
+			title: 'Ozone',
+			moreInfoOn: 'ozone',
+			time: 11.7,
+			icon: 'ozone',
+			templateID: 'tangent-ozone'
+		},
+		{
+			title: 'Why is the Sky Blue?',
+			moreInfoOn: 'the blue sky',
+			time: 15,
+			icon: 'sky',
+			templateID: 'tangent-blue-sky'
+		},
+		{
+			title: 'Sources & Credits',
+			moreInfoOn: 'sources',
+			time: 999,
+			icon: 'credits',
+			templateID: 'tangent-sources'
+		},
+	],
+
+	subtitles: [
+		[0.5, 4.1, 'Light from the sun is made up of photons of many different frequencies'],
+		[4.1, 8, 'most of which are in the visible light and infra-red bands'],
+		[8, 11.7, 'The Earth\'s atmosphere blocks almost all of the dangerous frequencies produced'],
+		[11.7, 13.6, 'only letting visible light through'],
+		[13.6, 15.3, 'These visible colours, all together'],
+		[15.3, 17.3, 'appear as white light'],
+		[17.3, 19.4, 'This white light then hits objects'],
+		[19.4, 23.1, 'whose surface absorbs some light frequencies, but reflect others'],
+		[23.1, 25.3, 'The reflected photons then enter the eye'],
+		[25.3, 26.4, 'smash into the retina'],
+		[26.4, 29.8, 'and their energy is converted into electrical impulses'],
+		[29.8, 33.6, 'which then get sent to the brain in order to process the image'],
+		[33.6, 36, 'From the core of a star to the back of an eye'],
+		[36, 38.2, 'over 150 million km'],
+		[38.2, 40.3, 'and after 100,000 years'],
+		[40.3, 42.1, 'the journey of a photon is over']
+	],
 
 	events: {
 	},
