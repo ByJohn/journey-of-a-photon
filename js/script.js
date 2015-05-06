@@ -4,8 +4,8 @@
 */
 
 $(function() {
-	// < IE9
-	if(!Modernizr.csstransforms || !Modernizr.video) {
+	// < IE9 or any IE
+	if(!Modernizr.csstransforms || !Modernizr.video || detectIE()) {
 		alert('For the best experience, please use a more modern web browser, like Google Chrome or Mozilla Firefox.');
 	}
 });
@@ -29,8 +29,16 @@ var music = {
 
 	maxVolume: 0.2,
 
+	muted: false,
+
 	initialize: function() {
 		this.player = this.$player[0];
+		this.muteButton = $('button.mute');
+
+		var that = this;
+		this.muteButton.on('click', function() {
+			that.toggleMute();
+		});
 	},
 
 	/* --- Basic start-stop controls --- */
@@ -131,6 +139,20 @@ var music = {
 				if(typeof(callback) == 'function') callback();
 			});
 		});
+	},
+
+
+	toggleMute: function() {
+		this.muted = !this.muted;
+
+		this.player.muted = this.muted;
+
+		if(this.muted) {
+			this.muteButton.html('<i class="fa fa-volume-off"></i>');
+		}
+		else {
+			this.muteButton.html('<i class="fa fa-volume-up"></i>');
+		}
 	}
 
 };
@@ -215,6 +237,10 @@ var ChapterPageView = PageView.extend({
 
 		this.events['click button.next'] = function() {
 			that.nextButtonClicked();
+		};
+
+		this.events['click button.skip'] = function() {
+			that.skipButtonClicked();
 		};
 
 		this.events['click .tangent-items li'] = function(e) {
@@ -394,6 +420,11 @@ var ChapterPageView = PageView.extend({
 		this.$tangentPopup.fadeOut(globalOptions.fadeSpeed, function() {
 			if(that.watching) that.video.play();
 		});
+	},
+
+
+	skipButtonClicked: function() {
+		this.video.currentTime(this.video.duration());
 	},
 
 
@@ -1216,4 +1247,31 @@ function map(value, in_min , in_max , out_min , out_max ) {
 //Source: http://stackoverflow.com/a/2901298/528423
 function numberWithCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+//Source: http://stackoverflow.com/a/21712356/528423
+function detectIE() {
+	var ua = window.navigator.userAgent;
+
+	var msie = ua.indexOf('MSIE ');
+	if (msie > 0) {
+		// IE 10 or older => return version number
+		return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+	}
+
+	var trident = ua.indexOf('Trident/');
+	if (trident > 0) {
+		// IE 11 => return version number
+		var rv = ua.indexOf('rv:');
+		return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+	}
+
+	var edge = ua.indexOf('Edge/');
+	if (edge > 0) {
+		// IE 12 => return version number
+		return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+	}
+
+	// other browser
+	return false;
 }
