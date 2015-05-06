@@ -254,9 +254,23 @@ img.padding {
 	/*background-color: #fff;*/
 	color: hsl(0, 10%, 30%);
 	-webkit-animation: colour-tween 15s infinite alternate linear;
+	animation: colour-tween 15s infinite alternate linear;
 }
 
 @-webkit-keyframes colour-tween {
+	0%   { color: hsl(0, 15%, 30%); } 
+	11%   { color: hsl(40, 15%, 30%); } 
+	22%   { color: hsl(80, 15%, 30%); } 
+	33%   { color: hsl(120, 15%, 30%); } 
+	44%   { color: hsl(160, 15%, 30%); } 
+	55%   { color: hsl(200, 15%, 30%); } 
+	66%   { color: hsl(240, 15%, 30%); } 
+	77%   { color: hsl(280, 15%, 30%); } 
+	88%   { color: hsl(320, 15%, 30%); } 
+	100% { color: hsl(360, 15%, 30%); }
+}
+
+@keyframes colour-tween {
 	0%   { color: hsl(0, 15%, 30%); } 
 	11%   { color: hsl(40, 15%, 30%); } 
 	22%   { color: hsl(80, 15%, 30%); } 
