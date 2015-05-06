@@ -158,7 +158,6 @@ var PageView = Backbone.View.extend({
 
 		this.render(); //Call child function for page-specific rendering
 
-		/*
 		if(this.options.music){
 			if(music.isPaused()) {
 				music.changeSong(this.options.music)
@@ -171,8 +170,6 @@ var PageView = Backbone.View.extend({
 				music.changeSongSmooth(this.options.music);
 			}
 		}
-		*/
-		console.info('Music disabled while development is in progress');
 	},
 
 	renderPageTemplate: function(templateIDString) {

@@ -123,6 +123,11 @@ em {
 	font-style: italic;
 }
 
+sub { 
+	vertical-align: sub;
+	font-size: smaller;
+}
+
 /*------------------- Global -------------------*/
 
 noscript {
@@ -347,6 +352,39 @@ img.padding {
 
 .page-title .by-john:hover {
 	opacity: 1;
+}
+
+.quick-nav {
+	position: absolute;
+	top: 100%;
+	margin-top: 50px;
+	width: 100%;
+	text-align: center;
+	opacity: 0.4;
+	font-size: 1.1em;
+	-webkit-transition: all 250ms;
+	transition: all 250ms;
+}
+
+.quick-nav:hover {
+	opacity: 0.8;
+}
+
+.quick-nav a {
+	display: inline-block;
+	margin-left: 0.1em;
+	padding-right: 0.4em;
+	border-right: 1px solid;
+	font-size: 0.8em;
+	line-height: 1;
+}
+
+.quick-nav a:last-of-type {
+	border-right: none;
+}
+
+.quick-nav a:hover {
+	text-decoration: underline;
 }
 
 /*------------------- Chapter Page -------------------*/
