@@ -756,9 +756,12 @@ var PageJourney = ChapterPageView.extend({
 		'click .journey-play' : 'journeyPlayClicked',
 		'mousedown .time-slider' : 'timeSliderMouseDown',
 		'mouseup .time-slider' : 'timeSliderMouseUp',
+		'touchstart .time-slider' : 'timeSliderMouseDown',
+		'touchend .time-slider' : 'timeSliderMouseUp',
 		'mousedown .journey-box .space' : 'spaceMouseDown',
 		'mouseup .journey-box .space' : 'spaceMouseUp',
 		'mousemove' : 'mouseMove',
+		'touchmove' : 'mouseMove',
 		'mousewheel .space': 'mouseScroll',
 		'DOMMouseScroll .space': 'mouseScroll'
 	},
