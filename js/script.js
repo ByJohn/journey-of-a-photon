@@ -1,6 +1,6 @@
 /*
 * By John Evans
-* www.johnevans.co
+* www.johnevans.uk
 */
 
 $(function() {
