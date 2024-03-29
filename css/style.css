@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -19,7 +19,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -123,7 +123,7 @@ em {
 	font-style: italic;
 }
 
-sub { 
+sub {
 	vertical-align: sub;
 	font-size: smaller;
 }
@@ -285,28 +285,28 @@ img.padding {
 }
 
 @-webkit-keyframes colour-tween {
-	0%   { color: hsl(0, 15%, 30%); } 
-	11%   { color: hsl(40, 15%, 30%); } 
-	22%   { color: hsl(80, 15%, 30%); } 
-	33%   { color: hsl(120, 15%, 30%); } 
-	44%   { color: hsl(160, 15%, 30%); } 
-	55%   { color: hsl(200, 15%, 30%); } 
-	66%   { color: hsl(240, 15%, 30%); } 
-	77%   { color: hsl(280, 15%, 30%); } 
-	88%   { color: hsl(320, 15%, 30%); } 
+	0%   { color: hsl(0, 15%, 30%); }
+	11%   { color: hsl(40, 15%, 30%); }
+	22%   { color: hsl(80, 15%, 30%); }
+	33%   { color: hsl(120, 15%, 30%); }
+	44%   { color: hsl(160, 15%, 30%); }
+	55%   { color: hsl(200, 15%, 30%); }
+	66%   { color: hsl(240, 15%, 30%); }
+	77%   { color: hsl(280, 15%, 30%); }
+	88%   { color: hsl(320, 15%, 30%); }
 	100% { color: hsl(360, 15%, 30%); }
 }
 
 @keyframes colour-tween {
-	0%   { color: hsl(0, 15%, 30%); } 
-	11%   { color: hsl(40, 15%, 30%); } 
-	22%   { color: hsl(80, 15%, 30%); } 
-	33%   { color: hsl(120, 15%, 30%); } 
-	44%   { color: hsl(160, 15%, 30%); } 
-	55%   { color: hsl(200, 15%, 30%); } 
-	66%   { color: hsl(240, 15%, 30%); } 
-	77%   { color: hsl(280, 15%, 30%); } 
-	88%   { color: hsl(320, 15%, 30%); } 
+	0%   { color: hsl(0, 15%, 30%); }
+	11%   { color: hsl(40, 15%, 30%); }
+	22%   { color: hsl(80, 15%, 30%); }
+	33%   { color: hsl(120, 15%, 30%); }
+	44%   { color: hsl(160, 15%, 30%); }
+	55%   { color: hsl(200, 15%, 30%); }
+	66%   { color: hsl(240, 15%, 30%); }
+	77%   { color: hsl(280, 15%, 30%); }
+	88%   { color: hsl(320, 15%, 30%); }
 	100% { color: hsl(360, 15%, 30%); }
 }
 
@@ -755,7 +755,7 @@ video.main-video {
 	/* background: url('https://download.unsplash.com/photo-1421930535025-d2af27c14065') center center; */
 	background: url('../images/space-background.jpg') right center; /* Source: http://finda.photo/image/8133 */
 	background-size: cover;
-	pointer-events none;
+	pointer-events: none;
 }
 
 .journey-bottom {
@@ -932,7 +932,7 @@ video.main-video {
 	/* background: rgba(255, 0, 0, 0.33); */
 	margin: 0 auto;
 	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);   
+	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 }
 
