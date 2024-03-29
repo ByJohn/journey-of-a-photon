@@ -386,7 +386,6 @@ var ChapterPageView = PageView.extend({
 	},
 
 	destroyVideo: function() {
-		console.log('destroy');
 		this.videoTag.removeEventListener('playing', this.videoPlayEvent, false );
 		this.videoTag.removeEventListener('pause', this.videoPauseEvent, false );
 		this.videoTag.removeEventListener('ended', this.videoEndEvent.bind(this), false );
@@ -417,8 +416,14 @@ var ChapterPageView = PageView.extend({
 	showTangentBox: function(tangent) {
 		if(this.watching) this.video.pause();
 
-		var template = _.template($('#template-tangent-popup-content').html());
-		this.$tangentPopup.find('.tangent-popup-content').html(template(tangent));
+		var template = _.template($('#template-tangent-popup-content').html()),
+			$content = this.$tangentPopup.find('.tangent-popup-content');
+
+		$content.html(template(tangent));
+
+		setTimeout(function () {
+			$content.scrollTop(0);
+		}, 1);
 
 		this.$tangentPopup.fadeIn(globalOptions.fadeSpeed);
 	},
