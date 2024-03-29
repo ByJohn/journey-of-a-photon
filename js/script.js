@@ -255,15 +255,7 @@ var ChapterPageView = PageView.extend({
 	unload: function() {
 		PageView.prototype.unload.call(this);
 
-		this.videoTag.removeEventListener('playing', this.videoPlayEvent, false );
-		this.videoTag.removeEventListener('pause', this.videoPauseEvent, false );
-		this.videoTag.removeEventListener('ended', this.videoEndEvent.bind(this), false );
-
-		Popcorn.destroy(this.video);
-
-		_.each(this.tangents, function(tangent) {
-			tangent.buttonView.remove(); //Removes every tangent button view
-		});
+		this.destroyVideo();
 	},
 
 	superRender: function() {
@@ -381,12 +373,28 @@ var ChapterPageView = PageView.extend({
 		$('.page').toggleClass('playing', false);
 	},
 
-	videoEndEvent: function(e) {
+	videoEndEvent: function(e, delay) {
 		var that = this;
+
+		delay = typeof delay === 'undefined' ? 1000 : delay;
+
 		this.video.pause();
 		this.watching = false;
-		this.$endVideo.delay(1000).fadeIn(globalOptions.fadeSpeed, function() {
+		this.$endVideo.delay(delay).fadeIn(globalOptions.fadeSpeed, function() {
 			that.video.pause();
+		});
+	},
+
+	destroyVideo: function() {
+		console.log('destroy');
+		this.videoTag.removeEventListener('playing', this.videoPlayEvent, false );
+		this.videoTag.removeEventListener('pause', this.videoPauseEvent, false );
+		this.videoTag.removeEventListener('ended', this.videoEndEvent.bind(this), false );
+
+		Popcorn.destroy(this.video);
+
+		_.each(this.tangents, function(tangent) {
+			tangent.buttonView.remove(); //Removes every tangent button view
 		});
 	},
 
@@ -424,7 +432,9 @@ var ChapterPageView = PageView.extend({
 
 
 	skipButtonClicked: function() {
-		this.video.currentTime(this.video.duration());
+		// this.video.currentTime(this.video.duration()); //No longer working
+		this.video.pause();
+		this.videoEndEvent(null, 0);
 	},
 
 
